@@ -3119,12 +3119,15 @@ function previewPhoto(event){
 
 }
 
-
 async function saveProfile(){
 
   if(!selected){
     return;
   }
+
+  /*
+     Update the selected personnel from the form.
+  */
 
   selected.name =
     $('eName').value.trim() ||
@@ -3151,6 +3154,11 @@ async function saveProfile(){
   selected.achievements =
     $('eAch').value.trim();
 
+
+  /*
+     Update photo if a new one was selected.
+  */
+
   const photoInput =
     $('ePhoto');
 
@@ -3164,46 +3172,94 @@ async function saveProfile(){
 
   }
 
+
+  /*
+     Update the local in-memory personnel list.
+     This is NOT localStorage.
+  */
+
   people =
     people.map(
       person =>
-        person.id === selected.id
+        String(person.id) ===
+        String(selected.id)
           ? selected
           : person
     );
 
-  saveLocalPeople();
+
+  /*
+     Save directly to Supabase.
+  */
 
   try{
 
-    if(supabaseConnected){
+    if(!supabaseConnected){
 
-      await savePersonToSupabase(
-        selected
-      );
-
-      alert(
-        'Profile saved successfully to Supabase.'
-      );
-
-    }else{
-
-      alert(
-        'Profile saved locally. Supabase is currently unavailable.'
+      throw new Error(
+        'Supabase is not connected.'
       );
 
     }
 
-  }catch(error){
 
-    console.error(error);
+    await savePersonToSupabase(
+      selected
+    );
+
+
+    /*
+       Re-load the saved record from Supabase
+       so Supabase remains the source of truth.
+    */
+
+    const rows =
+      await supabaseRequest(
+        SUPABASE_TABLE +
+        '?select=*&id=eq.' +
+        encodeURIComponent(selected.id)
+    );
+
+
+    if(
+      Array.isArray(rows) &&
+      rows.length > 0
+    ){
+
+      selected =
+        fromSupabasePerson(rows[0]);
+
+      people =
+        people.map(
+          person =>
+            String(person.id) ===
+            String(selected.id)
+              ? selected
+              : person
+        );
+
+    }
+
 
     alert(
-      'The profile was saved locally, but could not be saved to Supabase.\n\n' +
+      'Profile saved successfully to Supabase.'
+    );
+
+
+  }catch(error){
+
+    console.error(
+      'Error saving profile:',
+      error
+    );
+
+    alert(
+      'The profile could not be saved to Supabase.\n\n' +
       error.message
     );
 
   }
+
 
   renderAll();
 
