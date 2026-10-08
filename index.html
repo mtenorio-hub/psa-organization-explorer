@@ -1956,11 +1956,23 @@ function normalizePerson(person){
 
 }
 
-
 function normalizeSupabasePerson(person){
+    return {...person,group:person.group_code||person.group||undefined}
+}
 
-  return normalizePerson(person);
+function fromSupabasePerson(person){
+    return normalizeSupabasePerson(person);
+}
 
+function updateDataStatus(message,connected=false){
+    const el=$('dataStatus');
+    if(el){
+        el.textContent=message;
+        el.title=connected
+            ? 'Supabase data is active.'
+            : 'Supabase request failed; local browser data is being used.';
+        el.style.color=connected?'#16794a':'#b54708';
+    }
 }
 
 
