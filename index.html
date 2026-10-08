@@ -3,289 +3,4178 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ISMD Organization Explorer — New Copy</title>
+<title>ISMD Organization Explorer</title>
+
 <style>
-:root{color-scheme:light dark}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f7fb;color:#172033}button,input,textarea{font:inherit}.app{min-height:100vh;background:light-dark(#f5f7fb,#10141d);color:light-dark(#172033,#eef2f8);}
-.top{padding:24px 28px 18px;background:light-dark(#fff,#171c27);border-bottom:1px solid light-dark(#e3e8f0,#293241);display:flex;justify-content:space-between;gap:18px;align-items:center}.brand h1{margin:0;font-size:25px;letter-spacing:-.5px}.brand p{margin:5px 0 0;color:light-dark(#667085,#aab4c4);font-size:13px}.actions{display:flex;gap:9px;align-items:center}.search{width:250px;padding:10px 13px;border:1px solid light-dark(#d7deea,#374151);border-radius:10px;background:light-dark(#f8fafc,#111722);color:inherit;outline:none}.btn{border:1px solid light-dark(#d6deea,#394354);background:light-dark(#fff,#1d2532);color:inherit;border-radius:9px;padding:10px 13px;cursor:pointer}.btn.primary{background:#315efb;color:white;border-color:#315efb}.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;min-height:calc(100vh - 90px)}
-.main{padding:22px 26px;overflow:auto}.tabs{display:flex;gap:8px;margin-bottom:18px}.tab{padding:9px 13px;border:0;border-radius:9px;background:transparent;color:light-dark(#667085,#aab4c4);cursor:pointer}.tab.active{background:light-dark(#e9efff,#202b47);color:light-dark(#2446b8,#b9c7ff);font-weight:650}.summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}.stat{background:light-dark(#fff,#171c27);border:1px solid light-dark(#e3e8f0,#293241);border-radius:12px;padding:13px 16px;min-width:145px}.stat b{font-size:21px}.stat span{display:block;color:light-dark(#667085,#aab4c4);font-size:12px;margin-top:3px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px}.section-title h2{font-size:17px;margin:0}.muted{color:light-dark(#667085,#aab4c4);font-size:12px}
-.org{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;min-width:0;overflow:hidden}.node{position:relative;background:light-dark(#fff,#171c27);border:1px solid light-dark(#dfe5ee,#303a49);border-radius:14px;padding:13px 16px;box-shadow:0 3px 12px rgba(20,30,50,.05);min-width:220px;max-width:100%;text-align:center}.node.root{border-color:#315efb}.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#dce5ff;color:#2446b8;font-weight:750;margin:0 auto 8px;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}.node strong{display:block;font-size:14px}.node small{color:light-dark(#667085,#aab4c4)}.connector{width:1px;height:18px;background:light-dark(#cbd5e1,#475467)}.units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;width:100%;max-width:100%;min-width:0;align-items:start}.unit{background:light-dark(#fff,#171c27);border:1px solid light-dark(#dfe5ee,#303a49);border-radius:14px;padding:13px;min-width:0;max-width:100%;overflow:hidden}.unit-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.unit-head button{border:0;background:transparent;color:inherit;cursor:pointer}.unit h3{font-size:14px;margin:0;overflow-wrap:anywhere}.unit .function{font-size:11px;line-height:1.45;color:light-dark(#667085,#aab4c4);padding:9px;background:light-dark(#f7f9fc,#111722);border-radius:9px;margin-bottom:10px;overflow-wrap:anywhere}.people{display:grid;gap:8px;min-width:0}.person{display:flex;align-items:center;gap:9px;padding:8px;border:1px solid transparent;border-radius:10px;cursor:pointer;min-width:0}.person:hover{background:light-dark(#f3f6fb,#202733);border-color:light-dark(#dfe5ee,#303a49)}.person .avatar{width:36px;height:36px;margin:0;font-size:11px;flex:none}.person strong{font-size:12px;overflow-wrap:anywhere}.person small{display:block;font-size:11px;color:light-dark(#667085,#aab4c4);overflow-wrap:anywhere}
-.panel{border-left:1px solid light-dark(#e3e8f0,#293241);background:light-dark(#fff,#171c27);padding:24px;overflow:auto}.profile-head{text-align:center;padding-bottom:20px;border-bottom:1px solid light-dark(#e6eaf0,#2b3442)}.bigavatar{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;margin:0 auto 11px;background:#dce5ff;color:#2446b8;font-size:27px;font-weight:800;overflow:hidden}.bigavatar img{width:100%;height:100%;object-fit:cover}.profile-head h2{margin:0;font-size:19px}.profile-head p{margin:5px 0;color:light-dark(#667085,#aab4c4);font-size:13px}.tag{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:99px;background:light-dark(#edf2ff,#202b47);color:light-dark(#3153c9,#bdc9ff);font-size:11px}.profile-section{padding:17px 0;border-bottom:1px solid light-dark(#e6eaf0,#2b3442)}.profile-section h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:light-dark(#667085,#aab4c4)}.profile-section p{margin:0;font-size:13px;line-height:1.55}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:11px;padding:5px 8px;border-radius:7px;background:light-dark(#f0f3f8,#222a36)}.edit-grid{display:grid;gap:10px}.edit-grid label{font-size:11px;color:light-dark(#667085,#aab4c4)}.edit-grid input,.edit-grid textarea{width:100%;padding:9px 10px;border:1px solid light-dark(#d7deea,#394354);border-radius:8px;background:light-dark(#f8fafc,#111722);color:inherit}.edit-grid textarea{min-height:90px;resize:vertical}.empty{padding:50px 15px;text-align:center;color:light-dark(#667085,#aab4c4)}
-.unit-toggle{font-size:12px;padding:3px 6px!important}.functional{display:none}.functional.show{display:block}.function-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.func-card{background:light-dark(#fff,#171c27);border:1px solid light-dark(#dfe5ee,#303a49);border-radius:14px;padding:16px}.func-card h3{margin:0 0 7px;font-size:14px}.func-card p{margin:0;font-size:12px;line-height:1.55;color:light-dark(#667085,#aab4c4)}
-@media(max-width:950px){.layout{grid-template-columns:1fr}.panel{border-left:0;border-top:1px solid light-dark(#e3e8f0,#293241)}.units,.function-grid{grid-template-columns:1fr 1fr}.search{width:180px}}
-@media(max-width:650px){.top{align-items:flex-start;flex-direction:column}.actions{width:100%}.search{flex:1;width:auto}.main{padding:17px}.units,.function-grid{grid-template-columns:1fr}.node{min-width:200px}}
+:root{
+  color-scheme:light dark;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f5f7fb;
+  color:#172033;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+.app{
+  min-height:100vh;
+  background:light-dark(#f5f7fb,#10141d);
+  color:light-dark(#172033,#eef2f8);
+}
+
+.top{
+  padding:22px 28px 18px;
+  background:light-dark(#fff,#171c27);
+  border-bottom:1px solid light-dark(#e3e8f0,#293241);
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:center;
+}
+
+.brand h1{
+  margin:0;
+  font-size:25px;
+  letter-spacing:-.5px;
+}
+
+.brand p{
+  margin:5px 0 0;
+  color:light-dark(#667085,#aab4c4);
+  font-size:13px;
+}
+
+.actions{
+  display:flex;
+  gap:9px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.search{
+  width:250px;
+  padding:10px 13px;
+  border:1px solid light-dark(#d7deea,#374151);
+  border-radius:10px;
+  background:light-dark(#f8fafc,#111722);
+  color:inherit;
+  outline:none;
+}
+
+.btn{
+  border:1px solid light-dark(#d6deea,#394354);
+  background:light-dark(#fff,#1d2532);
+  color:inherit;
+  border-radius:9px;
+  padding:10px 13px;
+  cursor:pointer;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.btn.primary{
+  background:#315efb;
+  color:white;
+  border-color:#315efb;
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:99px;
+  font-size:11px;
+  white-space:nowrap;
+  background:light-dark(#f1f4f8,#202733);
+  color:light-dark(#667085,#aab4c4);
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#98a2b3;
+}
+
+.status.connected{
+  color:#087443;
+  background:#ecfdf3;
+}
+
+.status.connected .status-dot{
+  background:#12b76a;
+}
+
+.status.error{
+  color:#b42318;
+  background:#fef3f2;
+}
+
+.status.error .status-dot{
+  background:#f04438;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 390px;
+  min-height:calc(100vh - 90px);
+}
+
+.main{
+  padding:22px 26px;
+  overflow:auto;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.tab{
+  padding:9px 13px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:light-dark(#667085,#aab4c4);
+  cursor:pointer;
+}
+
+.tab.active{
+  background:light-dark(#e9efff,#202b47);
+  color:light-dark(#2446b8,#b9c7ff);
+  font-weight:650;
+}
+
+.summary{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.stat{
+  background:light-dark(#fff,#171c27);
+  border:1px solid light-dark(#e3e8f0,#293241);
+  border-radius:12px;
+  padding:13px 16px;
+  min-width:145px;
+}
+
+.stat b{
+  font-size:21px;
+}
+
+.stat span{
+  display:block;
+  color:light-dark(#667085,#aab4c4);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:4px 0 14px;
+}
+
+.section-title h2{
+  font-size:17px;
+  margin:0;
+}
+
+.muted{
+  color:light-dark(#667085,#aab4c4);
+  font-size:12px;
+}
+
+.org{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+}
+
+.node{
+  position:relative;
+  background:light-dark(#fff,#171c27);
+  border:1px solid light-dark(#dfe5ee,#303a49);
+  border-radius:14px;
+  padding:13px 16px;
+  box-shadow:0 3px 12px rgba(20,30,50,.05);
+  min-width:220px;
+  max-width:100%;
+  text-align:center;
+  cursor:pointer;
+}
+
+.node:hover{
+  border-color:#315efb;
+}
+
+.node.root{
+  border-color:#315efb;
+}
+
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#dce5ff;
+  color:#2446b8;
+  font-weight:750;
+  margin:0 auto 8px;
+  overflow:hidden;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.node strong{
+  display:block;
+  font-size:14px;
+}
+
+.node small{
+  color:light-dark(#667085,#aab4c4);
+}
+
+.connector{
+  width:1px;
+  height:18px;
+  background:light-dark(#cbd5e1,#475467);
+}
+
+.branch{
+  width:100%;
+}
+
+.units{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  align-items:start;
+}
+
+.unit{
+  background:light-dark(#fff,#171c27);
+  border:1px solid light-dark(#dfe5ee,#303a49);
+  border-radius:14px;
+  padding:13px;
+  min-width:0;
+  max-width:100%;
+  overflow:hidden;
+}
+
+.unit:hover{
+  border-color:#b8c5df;
+}
+
+.unit-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.unit-head button{
+  border:0;
+  background:transparent;
+  color:inherit;
+  cursor:pointer;
+}
+
+.unit h3{
+  font-size:14px;
+  margin:0;
+  overflow-wrap:anywhere;
+}
+
+.unit .function{
+  font-size:11px;
+  line-height:1.45;
+  color:light-dark(#667085,#aab4c4);
+  padding:9px;
+  background:light-dark(#f7f9fc,#111722);
+  border-radius:9px;
+  margin-bottom:10px;
+  overflow-wrap:anywhere;
+}
+
+.people{
+  display:grid;
+  gap:8px;
+  min-width:0;
+}
+
+.person{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:8px;
+  border:1px solid transparent;
+  border-radius:10px;
+  cursor:pointer;
+  min-width:0;
+}
+
+.person:hover{
+  background:light-dark(#f3f6fb,#202733);
+  border-color:light-dark(#dfe5ee,#303a49);
+}
+
+.person .avatar{
+  width:36px;
+  height:36px;
+  margin:0;
+  font-size:11px;
+  flex:none;
+}
+
+.person strong{
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+.person small{
+  display:block;
+  font-size:11px;
+  color:light-dark(#667085,#aab4c4);
+  overflow-wrap:anywhere;
+}
+
+.panel{
+  border-left:1px solid light-dark(#e3e8f0,#293241);
+  background:light-dark(#fff,#171c27);
+  padding:24px;
+  overflow:auto;
+}
+
+.profile-head{
+  text-align:center;
+  padding-bottom:20px;
+  border-bottom:1px solid light-dark(#e6eaf0,#2b3442);
+}
+
+.bigavatar{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  margin:0 auto 11px;
+  background:#dce5ff;
+  color:#2446b8;
+  font-size:27px;
+  font-weight:800;
+  overflow:hidden;
+}
+
+.bigavatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-head h2{
+  margin:0;
+  font-size:19px;
+}
+
+.profile-head p{
+  margin:5px 0;
+  color:light-dark(#667085,#aab4c4);
+  font-size:13px;
+}
+
+.tag{
+  display:inline-block;
+  margin-top:8px;
+  padding:4px 8px;
+  border-radius:99px;
+  background:light-dark(#edf2ff,#202b47);
+  color:light-dark(#3153c9,#bdc9ff);
+  font-size:11px;
+}
+
+.profile-section{
+  padding:17px 0;
+  border-bottom:1px solid light-dark(#e6eaf0,#2b3442);
+}
+
+.profile-section h4{
+  margin:0 0 8px;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:light-dark(#667085,#aab4c4);
+}
+
+.profile-section p{
+  margin:0;
+  font-size:13px;
+  line-height:1.55;
+}
+
+.chips{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.chip{
+  font-size:11px;
+  padding:5px 8px;
+  border-radius:7px;
+  background:light-dark(#f0f3f8,#222a36);
+}
+
+.edit-grid{
+  display:grid;
+  gap:10px;
+}
+
+.edit-grid label{
+  font-size:11px;
+  color:light-dark(#667085,#aab4c4);
+}
+
+.edit-grid input,
+.edit-grid textarea{
+  width:100%;
+  padding:9px 10px;
+  border:1px solid light-dark(#d7deea,#394354);
+  border-radius:8px;
+  background:light-dark(#f8fafc,#111722);
+  color:inherit;
+}
+
+.edit-grid textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.empty{
+  padding:50px 15px;
+  text-align:center;
+  color:light-dark(#667085,#aab4c4);
+}
+
+.functional{
+  display:none;
+}
+
+.functional.show{
+  display:block;
+}
+
+.function-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.func-card{
+  background:light-dark(#fff,#171c27);
+  border:1px solid light-dark(#dfe5ee,#303a49);
+  border-radius:14px;
+  padding:16px;
+}
+
+.func-card h3{
+  margin:0 0 7px;
+  font-size:14px;
+}
+
+.func-card p{
+  margin:0;
+  font-size:12px;
+  line-height:1.55;
+  color:light-dark(#667085,#aab4c4);
+}
+
+.action-list{
+  display:grid;
+  gap:9px;
+  padding-top:14px;
+}
+
+.photo-preview{
+  text-align:center;
+  padding:6px;
+}
+
+.photo-preview img{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.org-badge{
+  font-size:10px;
+  font-weight:700;
+  color:#315efb;
+  margin-bottom:4px;
+}
+
+@media(max-width:1100px){
+  .layout{
+    grid-template-columns:minmax(0,1fr) 340px;
+  }
+
+  .units,
+  .function-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:850px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .panel{
+    border-left:0;
+    border-top:1px solid light-dark(#e3e8f0,#293241);
+  }
+}
+
+@media(max-width:650px){
+  .top{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .actions{
+    width:100%;
+  }
+
+  .search{
+    flex:1;
+    width:auto;
+  }
+
+  .main{
+    padding:17px;
+  }
+
+  .units,
+  .function-grid{
+    grid-template-columns:1fr;
+  }
+
+  .node{
+    min-width:200px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
-<header class="top"><div class="brand"><h1>ISMD Organization Explorer</h1><p>Hierarchical organization chart: PSA → Office → Service → Division → Personnel</p></div><div class="actions"><input id="search" class="search" placeholder="Search employee or unit…"><button class="btn" id="resetBtn">Reset</button></div></header>
+
+<header class="top">
+
+  <div class="brand">
+    <h1>ISMD Organization Explorer</h1>
+    <p>
+      Hierarchical organization chart:
+      PSA → PRO → SISS → ISMD → Units → Personnel
+    </p>
+  </div>
+
+  <div class="actions">
+
+    <div id="dbStatus" class="status">
+      <span class="status-dot"></span>
+      <span>Connecting to Supabase...</span>
+    </div>
+
+    <input
+      id="search"
+      class="search"
+      placeholder="Search employee or unit..."
+    >
+
+    <button class="btn" id="resetBtn">
+      Reset Local Data
+    </button>
+
+  </div>
+
+</header>
+
 <div class="layout">
+
 <main class="main">
-<div class="tabs"><button class="tab active" data-tab="org">Organization Chart</button><button class="tab" data-tab="functional">Functional Chart</button></div>
-<div class="summary"><div class="stat"><b id="employeeCount">0</b><span>Personnel records</span></div><div class="stat"><b id="divisionCount">1</b><span>Divisions</span></div><div class="stat"><b id="unitCount">4</b><span>Unit</span></div><div class="stat"><b id="vacantCount">0</b><span>Vacant positions</span></div></div>
-<section id="orgView"><div class="section-title"><h2>ISMD Organization Structure</h2><div style="display:flex;gap:8px;align-items:center"><span class="muted">Click an organization node to manage its children, or click personnel to view/edit the profile</span></div></div><div class="org" id="orgTree"></div></section>
-<section id="functionalView" class="functional"><div class="section-title"><h2>Unit Functional Chart</h2><span class="muted">Responsibilities and core functions</span></div><div class="function-grid" id="functions"></div></section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="org">
+      Organization Chart
+    </button>
+
+    <button class="tab" data-tab="functional">
+      Functional Chart
+    </button>
+  </div>
+
+  <div class="summary">
+
+    <div class="stat">
+      <b id="employeeCount">0</b>
+      <span>Personnel records</span>
+    </div>
+
+    <div class="stat">
+      <b id="divisionCount">0</b>
+      <span>Divisions</span>
+    </div>
+
+    <div class="stat">
+      <b id="unitCount">0</b>
+      <span>Units / Services</span>
+    </div>
+
+    <div class="stat">
+      <b id="vacantCount">0</b>
+      <span>Vacant positions</span>
+    </div>
+
+  </div>
+
+  <section id="orgView">
+
+    <div class="section-title">
+
+      <h2>ISMD Organization Structure</h2>
+
+      <span class="muted">
+        Click organization nodes to manage them, or click personnel to view/edit.
+      </span>
+
+    </div>
+
+    <div class="org" id="orgTree"></div>
+
+  </section>
+
+  <section id="functionalView" class="functional">
+
+    <div class="section-title">
+
+      <h2>Unit Functional Chart</h2>
+
+      <span class="muted">
+        Responsibilities and core functions
+      </span>
+
+    </div>
+
+    <div class="function-grid" id="functions"></div>
+
+  </section>
+
 </main>
-<aside class="panel" id="panel"><div class="empty"><strong>Select an employee</strong><br><span>Click a profile card in the organization chart.</span></div></aside>
-</div></div>
+
+<aside class="panel" id="panel">
+
+  <div class="empty">
+    <strong>Select an employee</strong>
+    <br>
+    <span>
+      Click a personnel card in the organization chart.
+    </span>
+  </div>
+
+</aside>
+
+</div>
+</div>
+
+
 <script>
-const SUPABASE_URL='https://lxvehdskwneoxbbokfq.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_ZzELAcFxGnsoUb4lA9Jr7A_2YSMqZZ7';
-const SUPABASE_TABLE='organization_people';
 
-let supabaseConnected=false;
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
 
-const supabaseHeaders=()=>({
-  'apikey':SUPABASE_ANON_KEY,
-  'Authorization':'Bearer '+SUPABASE_ANON_KEY,
-  'Content-Type':'application/json',
-  'Prefer':'return=representation'
-});
+const SUPABASE_URL =
+  'https://lxvehdskwneoxbbokfq.supabase.co';
+
+const SUPABASE_ANON_KEY =
+  'sb_publishable_ZzELAcFxGnsoUb4lA9Jr7A_2YSMqZZ7';
+
+const SUPABASE_TABLE =
+  'organization_people';
+
+let supabaseConnected = false;
+
+
+/* =========================================================
+   INITIAL PERSONNEL DATA
+========================================================= */
+
+const initial = [
+
+  {
+    id:1,
+    name:'Guray, Sharon G.',
+    role:'Information Technology Officer III',
+    unit:'Division Leadership',
+    bio:'Division head shown at the top of the ISMD organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:2,
+    name:'VACANT',
+    role:'Information Technology Officer II',
+    unit:'Division Leadership',
+    bio:'Vacant position directly below the division head.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:3,
+    name:'VACANT',
+    role:'Information Systems Analyst I',
+    unit:'Division Leadership',
+    bio:'Vacant position shown on the division leadership level.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:4,
+    name:'Matus, Pauline Jane D.',
+    role:'Information Systems Analyst I',
+    unit:'Division Leadership',
+    bio:'Position shown on the division leadership level of the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:5,
+    name:'Contreras, Mary Claire R.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Division Leadership',
+    bio:'Position shown on the division leadership level of the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:6,
+    name:'De Jesus, Donna E.',
+    role:'Information Technology Officer I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Unit lead shown on the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:7,
+    name:'Rioflorido, Dyan Krizlen R.',
+    role:'Information Technology Officer I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Unit lead shown on the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:8,
+    name:'Luchico, Malvin L.',
+    role:'Information Technology Officer I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Unit lead shown on the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:9,
+    name:'Bagul, Ahmad L.',
+    role:'Information Technology Officer I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Unit lead shown on the organizational chart.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:10,
+    name:'Torrado, Joshua C.',
+    role:'Information Systems Analyst II',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:11,
+    name:'Banto, Aaron-O’Neil S.',
+    role:'Information Systems Analyst II',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:12,
+    name:'Dalawangbayan, Joven B.',
+    role:'Computer Maintenance Technologist II',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:13,
+    name:'Bulambao, Arnel B.',
+    role:'Computer Maintenance Technologist II',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:14,
+    name:'Andres, Bonn M.',
+    role:'Computer Maintenance Technologist II',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:15,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Vacant position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:16,
+    name:'Ayong, Rodolfo C.',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:17,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Vacant position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:18,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Vacant position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:19,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Support Service Unit',
+    group:'A',
+    bio:'Vacant position shown under continuation letter A on page 2.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:20,
+    name:'Regalado, Edwin S.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Additional Data Center and Network Operations personnel shown under the explicit unit heading.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:21,
+    name:'Quintana, Genrey M.',
+    role:'Information Systems Analyst II',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:22,
+    name:'VACANT',
+    role:'Information Systems Analyst II',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Vacant position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:23,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist II',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Vacant position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:24,
+    name:'Bagoisan, Ralph Daniel F.',
+    role:'Computer Maintenance Technologist II',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:25,
+    name:'VACANT',
+    role:'Information Systems Analyst I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Vacant position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:26,
+    name:'Fabro, Esteban Jr. H.',
+    role:'Information Systems Analyst I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:27,
+    name:'Pagulong, Rowena P.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:28,
+    name:'Rangel, Joseph Angelico R.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:29,
+    name:'Tangapa, John Gigi F.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Data Center and Network Operations Unit',
+    group:'B',
+    bio:'Position shown under continuation letter B on page 3.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:30,
+    name:'Lucero, Maribel C.',
+    role:'Information Systems Analyst II',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:31,
+    name:'Sablay, Ian Carlo D.',
+    role:'Information Systems Analyst II',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:32,
+    name:'Tenorio, Mark P.G.',
+    role:'Computer Maintenance Technologist II',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:33,
+    name:'Cachola, Jennylyn B.',
+    role:'Computer Maintenance Technologist II',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:34,
+    name:'Arcena, Andreia A.',
+    role:'Information Systems Analyst I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:35,
+    name:'Olchondra, Miguel M.',
+    role:'Information Systems Analyst I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:36,
+    name:'Dagasan, Abby Gail E.',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:37,
+    name:'Domingo, Mark Jerome S.',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:38,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'ICT Resource Management Unit',
+    group:'C',
+    bio:'Vacant position shown under continuation letter C on page 4.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:39,
+    name:'Tolentino, Kate P.',
+    role:'Information Systems Analyst I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Additional Information Systems Development and Management personnel shown under the explicit unit heading.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:40,
+    name:'Rapis, Juliet Ann C.',
+    role:'Information Systems Analyst I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Additional Information Systems Development and Management personnel shown under the explicit unit heading.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:41,
+    name:'Dames, Marc Joseph C.',
+    role:'Information Systems Analyst II',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:42,
+    name:'Ablanque Jr., Artemio B.',
+    role:'Information Systems Analyst II',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:43,
+    name:'Mamauag, Clifford Jay C.',
+    role:'Computer Maintenance Technologist II',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:44,
+    name:'Viguilla, Fidel Rostum L.',
+    role:'Computer Maintenance Technologist II',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:45,
+    name:'VACANT',
+    role:'Computer Maintenance Technologist I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Vacant position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:46,
+    name:'VACANT',
+    role:'Information Systems Analyst I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Vacant position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:47,
+    name:'Jacinto, Eva Celine B.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  },
+
+  {
+    id:48,
+    name:'Collo, Jun P.',
+    role:'Computer Maintenance Technologist I',
+    unit:'Information Systems Development and Management Unit',
+    group:'D',
+    bio:'Position shown under continuation letter D on page 5.',
+    experience:'',
+    skills:[],
+    achievements:''
+  }
+
+];
+
+
+/* =========================================================
+   ORGANIZATION STRUCTURE
+========================================================= */
+
+const divisions = [
+
+  {
+    id:'ISMD',
+    name:'Information Systems Management Division',
+    code:'ISMD',
+    function:'Division responsible for ICT systems, services, resources, development, and management.',
+    parent:'SISS'
+  }
+
+];
+
+const units = [
+
+  {
+    name:'ICT Support Service Unit',
+    code:'A',
+    division:'ISMD',
+    function:'Technical support, ICT installation and repair, network cabling, PhilSys registration helpdesk support, registration-kit support, and preventive/corrective maintenance.'
+  },
+
+  {
+    name:'Data Center and Network Operations Unit',
+    code:'B',
+    division:'ISMD',
+    function:'Network operations centers, disaster recovery sites, systems and servers, connectivity, service availability, server health, network components, and related technical operations.'
+  },
+
+  {
+    name:'ICT Resource Management Unit',
+    code:'C',
+    division:'ISMD',
+    function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
+  },
+
+  {
+    name:'Information Systems Development and Management Unit',
+    code:'D',
+    division:'ISMD',
+    function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
+  }
+
+];
+
+let proServices = [];
+
+let offices = [];
+
+
+/* =========================================================
+   LOCAL STATE
+========================================================= */
+
+let people =
+  JSON.parse(
+    localStorage.getItem('sissIsmdPeopleV1') || 'null'
+  ) || JSON.parse(JSON.stringify(initial));
+
+let selected = null;
+
+let organizationState =
+  JSON.parse(
+    localStorage.getItem('sissIsmdOrganizationV1') || 'null'
+  );
+
+if(organizationState){
+
+  if(Array.isArray(organizationState.divisions)){
+    divisions.splice(
+      0,
+      divisions.length,
+      ...organizationState.divisions
+    );
+  }
+
+  if(Array.isArray(organizationState.units)){
+    units.splice(
+      0,
+      units.length,
+      ...organizationState.units
+    );
+  }
+
+  if(Array.isArray(organizationState.proServices)){
+    proServices = organizationState.proServices;
+  }
+
+  if(Array.isArray(organizationState.offices)){
+    offices = organizationState.offices;
+  }
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+function escapeHtml(value){
+
+  return String(value ?? '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+
+}
+
+
+function initials(name){
+
+  return String(name || '')
+    .trim()
+    .split(/\s+/)
+    .map(x => x[0])
+    .filter(Boolean)
+    .slice(0,2)
+    .join('')
+    .toUpperCase();
+
+}
+
+
+function avatar(person,big=false){
+
+  const className =
+    big ? 'bigavatar' : 'avatar';
+
+  if(person.photo){
+
+    return `
+      <div class="${className}">
+        <img src="${escapeHtml(person.photo)}" alt="">
+      </div>
+    `;
+
+  }
+
+  return `
+    <div class="${className}">
+      ${escapeHtml(initials(person.name))}
+    </div>
+  `;
+
+}
+
+
+function saveLocalPeople(){
+
+  localStorage.setItem(
+    'sissIsmdPeopleV1',
+    JSON.stringify(people)
+  );
+
+}
+
+
+function saveOrganizationState(){
+
+  localStorage.setItem(
+    'sissIsmdOrganizationV1',
+    JSON.stringify({
+
+      divisions,
+      units,
+      proServices,
+      offices
+
+    })
+  );
+
+}
+
+
+function updateStatus(type,text){
+
+  const status = $('dbStatus');
+
+  if(!status){
+    return;
+  }
+
+  status.className = 'status';
+
+  if(type === 'connected'){
+    status.classList.add('connected');
+  }
+
+  if(type === 'error'){
+    status.classList.add('error');
+  }
+
+  status.innerHTML = `
+    <span class="status-dot"></span>
+    <span>${escapeHtml(text)}</span>
+  `;
+
+}
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+function supabaseHeaders(){
+
+  return {
+
+    'apikey':SUPABASE_ANON_KEY,
+
+    'Authorization':
+      'Bearer ' + SUPABASE_ANON_KEY,
+
+    'Content-Type':
+      'application/json',
+
+    'Prefer':
+      'return=representation'
+
+  };
+
+}
+
 
 async function supabaseRequest(path,options={}){
-  const response=await fetch(
-    SUPABASE_URL+'/rest/v1/'+path,
-    {
-      ...options,
-      headers:{
-        ...supabaseHeaders(),
-        ...(options.headers||{})
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      '/rest/v1/' +
+      path,
+      {
+
+        ...options,
+
+        headers:{
+          ...supabaseHeaders(),
+          ...(options.headers || {})
+        }
+
       }
-    }
-  );
+    );
 
   if(!response.ok){
-    const message=await response.text();
+
+    const message =
+      await response.text();
+
     throw new Error(
-      message || ('Supabase request failed: '+response.status)
+      message ||
+      `Supabase request failed: ${response.status}`
     );
+
   }
 
-  return response.status===204 ? null : response.json();
+  if(response.status === 204){
+    return null;
+  }
+
+  return response.json();
+
 }
 
-function supabasePerson(person){
+
+function toSupabasePerson(person){
+
   return {
+
     id:person.id,
+
     name:person.name,
+
     role:person.role,
+
     unit:person.unit,
-    group_code:person.group_code || person.group || null,
-    bio:person.bio || '',
-    experience:person.experience || '',
-    skills:Array.isArray(person.skills) ? person.skills : [],
-    achievements:person.achievements || '',
-    photo:person.photo || null
+
+    group_code:
+      person.group_code ||
+      person.group ||
+      null,
+
+    bio:
+      person.bio || '',
+
+    experience:
+      person.experience || '',
+
+    skills:
+      Array.isArray(person.skills)
+        ? person.skills
+        : [],
+
+    achievements:
+      person.achievements || '',
+
+    photo:
+      person.photo || null
+
   };
+
 }
 
-function normalizeSupabasePerson(person){
+
+function fromSupabasePerson(person){
+
   return {
+
     ...person,
-    group:person.group_code || person.group || undefined
+
+    group:
+      person.group_code ||
+      person.group ||
+      undefined
+
   };
+
 }
+
 
 async function loadPeopleFromSupabase(){
+
   try{
-    const rows=await supabaseRequest(
-      SUPABASE_TABLE+'?select=*&order=id.asc'
+
+    updateStatus(
+      '',
+      'Connecting to Supabase...'
     );
 
-    if(Array.isArray(rows)){
-      supabaseConnected=true;
-
-      console.log(
-        'Supabase connected. Records loaded:',
-        rows.length
+    const rows =
+      await supabaseRequest(
+        SUPABASE_TABLE +
+        '?select=*&order=id.asc'
       );
 
-      if(rows.length){
-        people=rows.map(normalizeSupabasePerson);
-
-        localStorage.setItem(
-          'sissIsmdPeopleV1',
-          JSON.stringify(people)
-        );
-      }else{
-        await supabaseRequest(
-          SUPABASE_TABLE,
-          {
-            method:'POST',
-            body:JSON.stringify(
-              initial.map(supabasePerson)
-            )
-          }
-        );
-
-        people=JSON.parse(JSON.stringify(initial));
-
-        localStorage.setItem(
-          'sissIsmdPeopleV1',
-          JSON.stringify(people)
-        );
-
-        console.log(
-          'Supabase table was empty. Uploaded initial records:',
-          people.length
-        );
-      }
-
-      renderUnits();
-
-      if(selected){
-        selected=
-          people.find(p=>p.id===selected.id) || null;
-
-        renderPanel();
-      }
+    if(!Array.isArray(rows)){
+      throw new Error(
+        'Supabase returned an unexpected response.'
+      );
     }
+
+    supabaseConnected = true;
+
+    updateStatus(
+      'connected',
+      `Supabase connected · ${rows.length} records`
+    );
+
+    console.log(
+      'Supabase connected.',
+      rows.length,
+      'records loaded.'
+    );
+
+
+    /*
+       If the table is empty, upload the
+       48 initial records automatically.
+    */
+
+    if(rows.length === 0){
+
+      const initialRows =
+        initial.map(toSupabasePerson);
+
+      await supabaseRequest(
+        SUPABASE_TABLE,
+        {
+          method:'POST',
+          body:JSON.stringify(initialRows)
+        }
+      );
+
+      people =
+        JSON.parse(
+          JSON.stringify(initial)
+        );
+
+      saveLocalPeople();
+
+      updateStatus(
+        'connected',
+        `Supabase connected · ${people.length} records`
+      );
+
+      console.log(
+        'Supabase was empty. Uploaded',
+        people.length,
+        'initial records.'
+      );
+
+    }else{
+
+      people =
+        rows.map(fromSupabasePerson);
+
+      saveLocalPeople();
+
+    }
+
+    renderAll();
+
   }catch(error){
-    supabaseConnected=false;
+
+    supabaseConnected = false;
+
+    updateStatus(
+      'error',
+      'Supabase unavailable · Local data'
+    );
 
     console.error(
-      'Supabase connection failed. Using local data instead.',
+      'Supabase connection failed:',
       error
     );
+
+    renderAll();
+
   }
+
 }
+
 
 async function savePersonToSupabase(person){
+
   if(!supabaseConnected){
-    throw new Error('Supabase is not connected.');
+
+    throw new Error(
+      'Supabase is not connected.'
+    );
+
   }
 
   await supabaseRequest(
-    SUPABASE_TABLE+'?id=eq.'+
+
+    SUPABASE_TABLE +
+    '?id=eq.' +
     encodeURIComponent(person.id),
+
     {
+
       method:'PATCH',
+
       body:JSON.stringify(
-        supabasePerson(person)
+        toSupabasePerson(person)
       )
+
     }
+
   );
+
 }
+
 
 async function insertPersonToSupabase(person){
+
   if(!supabaseConnected){
-    throw new Error('Supabase is not connected.');
+
+    throw new Error(
+      'Supabase is not connected.'
+    );
+
   }
 
   await supabaseRequest(
+
     SUPABASE_TABLE,
+
     {
+
       method:'POST',
+
       body:JSON.stringify(
-        supabasePerson(person)
+        toSupabasePerson(person)
       )
+
+    }
+
+  );
+
+}
+
+
+/* =========================================================
+   ORGANIZATION RENDERING
+========================================================= */
+
+function matchesSearch(value){
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  if(!query){
+    return true;
+  }
+
+  return String(value || '')
+    .toLowerCase()
+    .includes(query);
+
+}
+
+
+function unitHasSearchMatch(unit){
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  if(!query){
+    return true;
+  }
+
+  if(
+    unit.name.toLowerCase().includes(query) ||
+    unit.function.toLowerCase().includes(query)
+  ){
+    return true;
+  }
+
+  return people.some(
+    person =>
+      person.unit === unit.name &&
+      (
+        person.name.toLowerCase().includes(query) ||
+        person.role.toLowerCase().includes(query)
+      )
+  );
+
+}
+
+
+function renderPersonCard(person){
+
+  return `
+
+    <div
+      class="person"
+      data-action="person"
+      data-id="${person.id}"
+    >
+
+      ${avatar(person)}
+
+      <div>
+
+        <strong>
+          ${escapeHtml(person.name)}
+        </strong>
+
+        <small>
+          ${escapeHtml(person.role)}
+        </small>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderUnitCard(unit){
+
+  if(!unitHasSearchMatch(unit)){
+    return '';
+  }
+
+  const peopleForUnit =
+    people.filter(
+      person =>
+        person.unit === unit.name
+    );
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  const visiblePeople =
+    peopleForUnit.filter(person => {
+
+      if(!query){
+        return true;
+      }
+
+      return (
+        person.name.toLowerCase().includes(query) ||
+        person.role.toLowerCase().includes(query) ||
+        unit.name.toLowerCase().includes(query)
+      );
+
+    });
+
+  return `
+
+    <div class="unit">
+
+      <div class="unit-head">
+
+        <h3>
+          ${escapeHtml(unit.name)}
+        </h3>
+
+        <button
+          class="btn"
+          data-action="functions"
+          data-unit="${escapeHtml(unit.name)}"
+          title="View function"
+        >
+          ↗
+        </button>
+
+      </div>
+
+      <div class="function">
+        ${escapeHtml(unit.function)}
+      </div>
+
+      <div class="people">
+
+        ${
+          visiblePeople.length
+            ? visiblePeople.map(renderPersonCard).join('')
+            : `
+              <div class="muted">
+                No personnel records.
+              </div>
+            `
+        }
+
+      </div>
+
+      <button
+        class="btn"
+        style="width:100%;margin-top:9px"
+        data-action="add-person"
+        data-unit="${escapeHtml(unit.name)}"
+      >
+        + Add Personnel
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderDivision(division){
+
+  const divisionUnits =
+    units.filter(
+      unit =>
+        unit.division === division.id
+    );
+
+  const visibleUnits =
+    divisionUnits
+      .map(renderUnitCard)
+      .filter(Boolean);
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  const divisionMatches =
+    !query ||
+    division.name.toLowerCase().includes(query) ||
+    division.code.toLowerCase().includes(query);
+
+  if(
+    query &&
+    !divisionMatches &&
+    !visibleUnits.length
+  ){
+    return '';
+  }
+
+  return `
+
+    <div class="connector"></div>
+
+    <div class="branch">
+
+      <div
+        class="node root"
+        data-action="division"
+        data-id="${escapeHtml(division.id)}"
+      >
+
+        <div class="avatar">
+          ${escapeHtml(division.code)}
+        </div>
+
+        <strong>
+          ${escapeHtml(division.name)}
+        </strong>
+
+        <small>
+          Division Level · Click to manage
+        </small>
+
+      </div>
+
+      <div class="units">
+
+        ${
+          visibleUnits.length
+            ? visibleUnits.join('')
+            : `
+              <div class="muted">
+                No units found.
+              </div>
+            `
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderSissBranch(){
+
+  const visibleDivisions =
+    divisions
+      .map(renderDivision)
+      .filter(Boolean);
+
+  return `
+
+    <div class="connector"></div>
+
+    <div class="branch">
+
+      <div
+        class="node root"
+        data-action="org"
+        data-id="SISS"
+      >
+
+        <div class="avatar">
+          SISS
+        </div>
+
+        <strong>
+          SISS
+        </strong>
+
+        <small>
+          Service Level Parent · Click to manage
+        </small>
+
+      </div>
+
+      ${
+        visibleDivisions.join('')
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function renderOffices(){
+
+  if(!offices.length){
+    return '';
+  }
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  const visible =
+    offices.filter(
+      office =>
+        !query ||
+        office.name.toLowerCase().includes(query)
+    );
+
+  if(!visible.length){
+    return '';
+  }
+
+  return `
+
+    <div class="connector"></div>
+
+    <div
+      class="section-title"
+      style="width:100%;margin:0"
+    >
+
+      <h2>
+        Offices under PSA
+      </h2>
+
+    </div>
+
+    <div class="units">
+
+      ${
+        visible.map(
+          office => `
+
+            <div class="unit">
+
+              <div class="unit-head">
+
+                <h3>
+                  ${escapeHtml(office.name)}
+                </h3>
+
+              </div>
+
+              <div class="function">
+                Office under PSA
+              </div>
+
+              <button
+                class="btn primary"
+                style="width:100%"
+                data-action="office"
+                data-id="${escapeHtml(office.id)}"
+              >
+                Manage Office
+              </button>
+
+            </div>
+
+          `
+        ).join('')
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function renderProServices(){
+
+  if(!proServices.length){
+    return '';
+  }
+
+  const query =
+    $('search').value
+      .toLowerCase()
+      .trim();
+
+  const visible =
+    proServices.filter(
+      service =>
+        !query ||
+        service.name.toLowerCase().includes(query) ||
+        service.function.toLowerCase().includes(query)
+    );
+
+  if(!visible.length){
+    return '';
+  }
+
+  return `
+
+    <div class="connector"></div>
+
+    <div
+      class="section-title"
+      style="width:100%;margin:0"
+    >
+
+      <h2>
+        Services directly under PRO
+      </h2>
+
+    </div>
+
+    <div class="units">
+
+      ${
+        visible.map(
+          service => `
+
+            <div
+              class="unit"
+              data-action="service"
+              data-id="${escapeHtml(service.name)}"
+            >
+
+              <div class="unit-head">
+
+                <h3>
+                  ${escapeHtml(service.name)}
+                </h3>
+
+              </div>
+
+              <div class="function">
+                ${escapeHtml(service.function)}
+              </div>
+
+              <button
+                class="btn primary"
+                style="width:100%"
+                data-action="service"
+                data-id="${escapeHtml(service.name)}"
+              >
+                Manage Service
+              </button>
+
+            </div>
+
+          `
+        ).join('')
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function renderOrgTree(){
+
+  $('orgTree').innerHTML = `
+
+    <div
+      class="node root"
+      data-action="org"
+      data-id="PSA"
+    >
+
+      <div class="avatar">
+        PSA
+      </div>
+
+      <strong>
+        Philippine Statistics Authority
+      </strong>
+
+      <small>
+        Parent Organization · Click to manage
+      </small>
+
+    </div>
+
+    <div class="connector"></div>
+
+    <div
+      class="node root"
+      data-action="org"
+      data-id="PRO"
+      style="border-color:#6b7cff"
+    >
+
+      <div class="avatar">
+        PRO
+      </div>
+
+      <strong>
+        Regional Office
+      </strong>
+
+      <small>
+        PRO · Click to manage
+      </small>
+
+    </div>
+
+    ${renderSissBranch()}
+
+    ${renderOffices()}
+
+    ${renderProServices()}
+
+  `;
+
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function renderSummary(){
+
+  $('employeeCount').textContent =
+    people.length;
+
+  $('divisionCount').textContent =
+    divisions.length;
+
+  $('unitCount').textContent =
+    units.length;
+
+  $('vacantCount').textContent =
+    people.filter(
+      person =>
+        person.name === 'VACANT'
+    ).length;
+
+}
+
+
+/* =========================================================
+   FUNCTIONAL CHART
+========================================================= */
+
+function renderFunctions(){
+
+  $('functions').innerHTML =
+    units.map(
+      unit => `
+
+        <div
+          class="func-card"
+          data-unit="${escapeHtml(unit.name)}"
+        >
+
+          <h3>
+            ${escapeHtml(unit.name)}
+          </h3>
+
+          <p>
+            ${escapeHtml(unit.function)}
+          </p>
+
+        </div>
+
+      `
+    ).join('');
+
+}
+
+
+/* =========================================================
+   PERSONNEL PROFILE
+========================================================= */
+
+function selectPerson(id){
+
+  selected =
+    people.find(
+      person =>
+        Number(person.id) === Number(id)
+    ) || null;
+
+  renderPanel();
+
+}
+
+
+function renderPanel(){
+
+  if(!selected){
+
+    $('panel').innerHTML = `
+
+      <div class="empty">
+
+        <strong>
+          Select an employee
+        </strong>
+
+        <br>
+
+        <span>
+          Click a personnel card in the organization chart.
+        </span>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  const person = selected;
+
+  $('panel').innerHTML = `
+
+    <div class="profile-head">
+
+      ${avatar(person,true)}
+
+      <h2>
+        ${escapeHtml(person.name)}
+      </h2>
+
+      <p>
+        ${escapeHtml(person.role)}
+      </p>
+
+      <span class="tag">
+        ${escapeHtml(person.unit)}
+      </span>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        About / Job Description
+      </h4>
+
+      <p>
+        ${escapeHtml(
+          person.bio ||
+          'No profile information yet.'
+        )}
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Experience
+      </h4>
+
+      <p>
+        ${escapeHtml(
+          person.experience ||
+          'No experience information yet.'
+        )}
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Skills
+      </h4>
+
+      <div class="chips">
+
+        ${
+          Array.isArray(person.skills) &&
+          person.skills.length
+
+            ? person.skills
+                .map(
+                  skill =>
+                    `<span class="chip">
+                      ${escapeHtml(skill)}
+                    </span>`
+                )
+                .join('')
+
+            : `<span class="muted">
+                No skills added.
+              </span>`
+        }
+
+      </div>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Accomplishments
+      </h4>
+
+      <p>
+        ${escapeHtml(
+          person.achievements ||
+          'No accomplishments added.'
+        )}
+      </p>
+
+    </div>
+
+    <div style="padding-top:16px">
+
+      <button
+        class="btn primary"
+        style="width:100%"
+        data-action="edit-person"
+      >
+        Edit Profile
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function editProfile(){
+
+  if(!selected){
+    return;
+  }
+
+  const person = selected;
+
+  $('panel').innerHTML = `
+
+    <div class="profile-head">
+
+      ${avatar(person,true)}
+
+      <h2>
+        Edit Profile
+      </h2>
+
+      <p>
+        ${escapeHtml(person.name)}
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <div class="edit-grid">
+
+        <label>
+
+          Profile Picture
+
+          <input
+            id="ePhoto"
+            type="file"
+            accept="image/*"
+          >
+
+          <span class="muted">
+            Upload an employee photo.
+          </span>
+
+        </label>
+
+        <div class="photo-preview" id="photoPreview">
+
+          ${
+            person.photo
+
+              ? `
+                <img
+                  src="${escapeHtml(person.photo)}"
+                  alt=""
+                >
+              `
+
+              : `
+                <span class="muted">
+                  No photo uploaded.
+                </span>
+              `
+          }
+
+        </div>
+
+        <label>
+
+          Full Name
+
+          <input
+            id="eName"
+            value="${escapeHtml(person.name)}"
+          >
+
+        </label>
+
+        <label>
+
+          Position
+
+          <input
+            id="eRole"
+            value="${escapeHtml(person.role)}"
+          >
+
+        </label>
+
+        <label>
+
+          About / Job Description
+
+          <textarea id="eBio">${escapeHtml(
+            person.bio || ''
+          )}</textarea>
+
+        </label>
+
+        <label>
+
+          Work Experience
+
+          <textarea id="eExp">${escapeHtml(
+            person.experience || ''
+          )}</textarea>
+
+        </label>
+
+        <label>
+
+          Skills
+
+          <span class="muted">
+            comma separated
+          </span>
+
+          <input
+            id="eSkills"
+            value="${escapeHtml(
+              (person.skills || []).join(', ')
+            )}"
+          >
+
+        </label>
+
+        <label>
+
+          Accomplishments
+
+          <textarea id="eAch">${escapeHtml(
+            person.achievements || ''
+          )}</textarea>
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <div style="display:flex;gap:8px">
+
+      <button
+        class="btn primary"
+        style="flex:1"
+        data-action="save-profile"
+      >
+        Save Changes
+      </button>
+
+      <button
+        class="btn"
+        data-action="cancel-edit"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  `;
+
+
+  $('ePhoto').addEventListener(
+    'change',
+    previewPhoto
+  );
+
+}
+
+
+function previewPhoto(event){
+
+  const input =
+    event.target;
+
+  const file =
+    input.files &&
+    input.files[0];
+
+  if(!file){
+    return;
+  }
+
+  if(!file.type.startsWith('image/')){
+
+    alert(
+      'Please select an image file.'
+    );
+
+    input.value = '';
+
+    return;
+
+  }
+
+  const reader =
+    new FileReader();
+
+  reader.onload = () => {
+
+    const preview =
+      $('photoPreview');
+
+    if(preview){
+
+      preview.innerHTML = `
+
+        <img
+          src="${escapeHtml(reader.result)}"
+          alt=""
+        >
+
+      `;
+
+    }
+
+    input.dataset.photo =
+      reader.result;
+
+  };
+
+  reader.readAsDataURL(file);
+
+}
+
+
+async function saveProfile(){
+
+  if(!selected){
+    return;
+  }
+
+  selected.name =
+    $('eName').value.trim() ||
+    selected.name;
+
+  selected.role =
+    $('eRole').value.trim() ||
+    selected.role;
+
+  selected.bio =
+    $('eBio').value.trim();
+
+  selected.experience =
+    $('eExp').value.trim();
+
+  selected.skills =
+    $('eSkills').value
+      .split(',')
+      .map(
+        value => value.trim()
+      )
+      .filter(Boolean);
+
+  selected.achievements =
+    $('eAch').value.trim();
+
+  const photoInput =
+    $('ePhoto');
+
+  if(
+    photoInput &&
+    photoInput.dataset.photo
+  ){
+
+    selected.photo =
+      photoInput.dataset.photo;
+
+  }
+
+  people =
+    people.map(
+      person =>
+        person.id === selected.id
+          ? selected
+          : person
+    );
+
+  saveLocalPeople();
+
+  try{
+
+    if(supabaseConnected){
+
+      await savePersonToSupabase(
+        selected
+      );
+
+      alert(
+        'Profile saved successfully to Supabase.'
+      );
+
+    }else{
+
+      alert(
+        'Profile saved locally. Supabase is currently unavailable.'
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      'The profile was saved locally, but could not be saved to Supabase.\n\n' +
+      error.message
+    );
+
+  }
+
+  renderAll();
+
+  renderPanel();
+
+}
+
+
+/* =========================================================
+   ORGANIZATION PANELS
+========================================================= */
+
+function renderOrgPanel(id){
+
+  if(id === 'PSA'){
+
+    $('panel').innerHTML = `
+
+      <div class="profile-head">
+
+        <div class="bigavatar">
+          PSA
+        </div>
+
+        <h2>
+          Philippine Statistics Authority
+        </h2>
+
+        <p>
+          Parent Organization
+        </p>
+
+      </div>
+
+      <div class="profile-section">
+
+        <h4>
+          Organization Structure
+        </h4>
+
+        <p>
+          PSA is the parent organization containing the
+          Regional Office and its organizational branches.
+        </p>
+
+      </div>
+
+      <div class="action-list">
+
+        <button
+          class="btn primary"
+          data-action="add-office"
+        >
+          + Add Office
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if(id === 'PRO'){
+
+    $('panel').innerHTML = `
+
+      <div class="profile-head">
+
+        <div class="bigavatar">
+          PRO
+        </div>
+
+        <h2>
+          Regional Office
+        </h2>
+
+        <p>
+          PRO Office Level
+        </p>
+
+      </div>
+
+      <div class="profile-section">
+
+        <h4>
+          Organization Structure
+        </h4>
+
+        <p>
+          The Regional Office contains SISS and other
+          organizational services or branches.
+        </p>
+
+      </div>
+
+      <div class="action-list">
+
+        <button
+          class="btn primary"
+          data-action="add-service"
+        >
+          + Add Service
+        </button>
+
+        <button
+          class="btn"
+          data-action="add-division"
+        >
+          + Add Division
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if(id === 'SISS'){
+
+    $('panel').innerHTML = `
+
+      <div class="profile-head">
+
+        <div class="bigavatar">
+          SISS
+        </div>
+
+        <h2>
+          SISS
+        </h2>
+
+        <p>
+          Service Level Parent
+        </p>
+
+      </div>
+
+      <div class="profile-section">
+
+        <h4>
+          Organization Structure
+        </h4>
+
+        <p>
+          SISS is the service-level parent containing
+          the Information Systems Management Division.
+        </p>
+
+      </div>
+
+      <div class="action-list">
+
+        <button
+          class="btn primary"
+          data-action="add-division"
+        >
+          + Add Division
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const division =
+    divisions.find(
+      item =>
+        item.id === id
+    );
+
+  if(!division){
+    return;
+  }
+
+  const divisionUnits =
+    units.filter(
+      unit =>
+        unit.division === division.id
+    );
+
+  $('panel').innerHTML = `
+
+    <div class="profile-head">
+
+      <div class="bigavatar">
+        ${escapeHtml(division.code)}
+      </div>
+
+      <h2>
+        ${escapeHtml(division.name)}
+      </h2>
+
+      <p>
+        Division Level
+      </p>
+
+      <span class="tag">
+        ${escapeHtml(division.code)}
+      </span>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Division Function
+      </h4>
+
+      <p>
+        ${escapeHtml(division.function)}
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Units
+      </h4>
+
+      <p>
+        ${divisionUnits.length}
+        unit(s) currently assigned.
+      </p>
+
+    </div>
+
+    <div class="action-list">
+
+      <button
+        class="btn primary"
+        data-action="add-unit"
+        data-division="${escapeHtml(division.id)}"
+      >
+        + Add Unit
+      </button>
+
+      <button
+        class="btn"
+        data-action="add-division-personnel"
+        data-division="${escapeHtml(division.id)}"
+      >
+        + Add Personnel
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderOfficePanel(id){
+
+  const office =
+    offices.find(
+      item =>
+        item.id === id
+    );
+
+  if(!office){
+    return;
+  }
+
+  $('panel').innerHTML = `
+
+    <div class="profile-head">
+
+      <div class="bigavatar">
+        OFF
+      </div>
+
+      <h2>
+        ${escapeHtml(office.name)}
+      </h2>
+
+      <p>
+        Office under PSA
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Organization Structure
+      </h4>
+
+      <p>
+        This office is part of the PSA organizational
+        structure.
+      </p>
+
+    </div>
+
+    <div class="action-list">
+
+      <button
+        class="btn primary"
+        data-action="add-office-service"
+        data-office="${escapeHtml(office.id)}"
+      >
+        + Add Service
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function renderServicePanel(name){
+
+  const service =
+    units.find(
+      item =>
+        item.name === name
+    ) ||
+    proServices.find(
+      item =>
+        item.name === name
+    );
+
+  if(!service){
+    return;
+  }
+
+  $('panel').innerHTML = `
+
+    <div class="profile-head">
+
+      <div class="bigavatar">
+        S
+      </div>
+
+      <h2>
+        ${escapeHtml(service.name)}
+      </h2>
+
+      <p>
+        Service / Unit Level
+      </p>
+
+    </div>
+
+    <div class="profile-section">
+
+      <h4>
+        Function
+      </h4>
+
+      <p>
+        ${escapeHtml(service.function)}
+      </p>
+
+    </div>
+
+    <div class="action-list">
+
+      <button
+        class="btn primary"
+        data-action="add-person"
+        data-unit="${escapeHtml(service.name)}"
+      >
+        + Add Personnel
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   ADD ORGANIZATION ITEMS
+========================================================= */
+
+function addOffice(){
+
+  const name =
+    prompt(
+      'Office name under PSA:'
+    );
+
+  if(!name){
+    return;
+  }
+
+  const clean =
+    name.trim();
+
+  if(!clean){
+    return;
+  }
+
+  if(
+    offices.some(
+      office =>
+        office.name.toLowerCase() ===
+        clean.toLowerCase()
+    )
+  ){
+
+    alert(
+      'That office already exists.'
+    );
+
+    return;
+
+  }
+
+  offices.push({
+
+    id:
+      'OFFICE_' +
+      Date.now(),
+
+    name:clean,
+
+    parent:'PSA'
+
+  });
+
+  saveOrganizationState();
+
+  renderAll();
+
+  renderOrgPanel('PSA');
+
+}
+
+
+function addService(){
+
+  const name =
+    prompt(
+      'Service name under PRO:'
+    );
+
+  if(!name){
+    return;
+  }
+
+  const clean =
+    name.trim();
+
+  if(!clean){
+    return;
+  }
+
+  const exists =
+    [
+      ...units,
+      ...proServices
+    ].some(
+      item =>
+        item.name.toLowerCase() ===
+        clean.toLowerCase()
+    );
+
+  if(exists){
+
+    alert(
+      'That service already exists.'
+    );
+
+    return;
+
+  }
+
+  const code =
+    prompt(
+      'Service code (optional):'
+    ) || '';
+
+  const functionText =
+    prompt(
+      'Service function:'
+    ) ||
+    'New service. Add personnel as needed.';
+
+  proServices.push({
+
+    name:clean,
+
+    code:code.trim(),
+
+    function:functionText.trim(),
+
+    parent:'PRO'
+
+  });
+
+  saveOrganizationState();
+
+  renderAll();
+
+  renderOrgPanel('PRO');
+
+}
+
+
+function addDivision(){
+
+  const code =
+    prompt(
+      'Division code (example: XYZ):'
+    );
+
+  if(!code){
+    return;
+  }
+
+  const cleanCode =
+    code.trim().toUpperCase();
+
+  const name =
+    prompt(
+      'Division name:'
+    );
+
+  if(!name){
+    return;
+  }
+
+  const cleanName =
+    name.trim();
+
+  if(
+    divisions.some(
+      division =>
+        division.id.toLowerCase() ===
+        cleanCode.toLowerCase()
+    )
+  ){
+
+    alert(
+      'That division code already exists.'
+    );
+
+    return;
+
+  }
+
+  const functionText =
+    prompt(
+      'Division function:'
+    ) ||
+    'New division. Add units and personnel as needed.';
+
+  divisions.push({
+
+    id:cleanCode,
+
+    code:cleanCode,
+
+    name:cleanName,
+
+    function:functionText.trim(),
+
+    parent:'SISS'
+
+  });
+
+  saveOrganizationState();
+
+  renderAll();
+
+  renderOrgPanel('SISS');
+
+}
+
+
+function addUnit(divisionId){
+
+  const division =
+    divisions.find(
+      item =>
+        item.id === divisionId
+    );
+
+  if(!division){
+    return;
+  }
+
+  const name =
+    prompt(
+      `Unit name under ${division.name}:`
+    );
+
+  if(!name){
+    return;
+  }
+
+  const clean =
+    name.trim();
+
+  if(
+    units.some(
+      unit =>
+        unit.name.toLowerCase() ===
+        clean.toLowerCase()
+    )
+  ){
+
+    alert(
+      'That unit already exists.'
+    );
+
+    return;
+
+  }
+
+  const code =
+    prompt(
+      'Unit code (optional):'
+    ) || '';
+
+  const functionText =
+    prompt(
+      'Unit function:'
+    ) ||
+    'New unit. Add personnel as needed.';
+
+  units.push({
+
+    name:clean,
+
+    code:code.trim(),
+
+    division:divisionId,
+
+    function:functionText.trim()
+
+  });
+
+  saveOrganizationState();
+
+  renderAll();
+
+  renderOrgPanel(divisionId);
+
+}
+
+
+async function addPersonnel(unitName){
+
+  const name =
+    prompt(
+      `Personnel name for ${unitName}:`
+    );
+
+  if(!name){
+    return;
+  }
+
+  const cleanName =
+    name.trim();
+
+  if(!cleanName){
+    return;
+  }
+
+  const role =
+    prompt(
+      'Position / role:'
+    ) ||
+    'Position';
+
+  const id =
+    Math.max(
+      0,
+      ...people.map(
+        person =>
+          Number(person.id) || 0
+      )
+    ) + 1;
+
+  const person = {
+
+    id,
+
+    name:cleanName,
+
+    role:role.trim(),
+
+    unit:unitName,
+
+    bio:'',
+
+    experience:'',
+
+    skills:[],
+
+    achievements:'',
+
+    photo:null
+
+  };
+
+  people.push(person);
+
+  saveLocalPeople();
+
+  try{
+
+    if(supabaseConnected){
+
+      await insertPersonToSupabase(
+        person
+      );
+
+      alert(
+        'Personnel added successfully to Supabase.'
+      );
+
+    }else{
+
+      alert(
+        'Personnel added locally. Supabase is currently unavailable.'
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      'Personnel was added locally, but could not be saved to Supabase.\n\n' +
+      error.message
+    );
+
+  }
+
+  renderAll();
+
+}
+
+
+async function addDivisionPersonnel(
+  divisionId
+){
+
+  const division =
+    divisions.find(
+      item =>
+        item.id === divisionId
+    );
+
+  if(!division){
+    return;
+  }
+
+  const name =
+    prompt(
+      `Personnel name for ${division.name}:`
+    );
+
+  if(!name){
+    return;
+  }
+
+  const role =
+    prompt(
+      'Position / role:'
+    ) ||
+    'Position';
+
+  const id =
+    Math.max(
+      0,
+      ...people.map(
+        person =>
+          Number(person.id) || 0
+      )
+    ) + 1;
+
+  const person = {
+
+    id,
+
+    name:name.trim(),
+
+    role:role.trim(),
+
+    unit:division.name,
+
+    bio:'',
+
+    experience:'',
+
+    skills:[],
+
+    achievements:'',
+
+    photo:null
+
+  };
+
+  people.push(person);
+
+  saveLocalPeople();
+
+  try{
+
+    if(supabaseConnected){
+
+      await insertPersonToSupabase(
+        person
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      'Personnel was added locally, but could not be saved to Supabase.\n\n' +
+      error.message
+    );
+
+  }
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetLocalData(){
+
+  const confirmed =
+    confirm(
+      'Reset the local personnel and organization data to the original 48-person configuration?\n\n' +
+      'This does NOT delete records from Supabase.'
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  people =
+    JSON.parse(
+      JSON.stringify(initial)
+    );
+
+  divisions.splice(
+    0,
+    divisions.length,
+
+    {
+      id:'ISMD',
+      name:'Information Systems Management Division',
+      code:'ISMD',
+      function:'Division responsible for ICT systems, services, resources, development, and management.',
+      parent:'SISS'
+    }
+
+  );
+
+  units.splice(
+    0,
+    units.length,
+
+    {
+      name:'ICT Support Service Unit',
+      code:'A',
+      division:'ISMD',
+      function:'Technical support, ICT installation and repair, network cabling, PhilSys registration helpdesk support, registration-kit support, and preventive/corrective maintenance.'
+    },
+
+    {
+      name:'Data Center and Network Operations Unit',
+      code:'B',
+      division:'ISMD',
+      function:'Network operations centers, disaster recovery sites, systems and servers, connectivity, service availability, server health, network components, and related technical operations.'
+    },
+
+    {
+      name:'ICT Resource Management Unit',
+      code:'C',
+      division:'ISMD',
+      function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
+    },
+
+    {
+      name:'Information Systems Development and Management Unit',
+      code:'D',
+      division:'ISMD',
+      function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
+    }
+
+  );
+
+  proServices = [];
+
+  offices = [];
+
+  saveLocalPeople();
+
+  saveOrganizationState();
+
+  selected = null;
+
+  renderAll();
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$('search').addEventListener(
+  'input',
+  () => {
+
+    renderOrgTree();
+
+    renderSummary();
+
+  }
+);
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+document
+  .querySelectorAll('.tab')
+  .forEach(
+    tab => {
+
+      tab.addEventListener(
+        'click',
+        () => {
+
+          document
+            .querySelectorAll('.tab')
+            .forEach(
+              item =>
+                item.classList.remove(
+                  'active'
+                )
+            );
+
+          tab.classList.add(
+            'active'
+          );
+
+          const functional =
+            tab.dataset.tab ===
+            'functional';
+
+          $('orgView')
+            .style.display =
+              functional
+                ? 'none'
+                : 'block';
+
+          $('functionalView')
+            .classList.toggle(
+              'show',
+              functional
+            );
+
+        }
+      );
+
     }
   );
+
+
+/* =========================================================
+   ORGANIZATION TREE EVENT HANDLER
+========================================================= */
+
+$('orgTree').addEventListener(
+  'click',
+  event => {
+
+    const target =
+      event.target.closest(
+        '[data-action]'
+      );
+
+    if(!target){
+      return;
+    }
+
+    const action =
+      target.dataset.action;
+
+    const id =
+      target.dataset.id;
+
+
+    if(action === 'person'){
+
+      event.stopPropagation();
+
+      selectPerson(
+        Number(id)
+      );
+
+      return;
+
+    }
+
+
+    if(action === 'org'){
+
+      renderOrgPanel(id);
+
+      return;
+
+    }
+
+
+    if(action === 'division'){
+
+      renderOrgPanel(id);
+
+      return;
+
+    }
+
+
+    if(action === 'office'){
+
+      renderOfficePanel(id);
+
+      return;
+
+    }
+
+
+    if(action === 'service'){
+
+      renderServicePanel(id);
+
+      return;
+
+    }
+
+
+    if(action === 'functions'){
+
+      event.stopPropagation();
+
+      showFunctions(
+        target.dataset.unit
+      );
+
+      return;
+
+    }
+
+
+    if(action === 'add-person'){
+
+      event.stopPropagation();
+
+      addPersonnel(
+        target.dataset.unit
+      );
+
+      return;
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PANEL EVENT HANDLER
+========================================================= */
+
+$('panel').addEventListener(
+  'click',
+  event => {
+
+    const target =
+      event.target.closest(
+        '[data-action]'
+      );
+
+    if(!target){
+      return;
+    }
+
+    const action =
+      target.dataset.action;
+
+
+    if(action === 'edit-person'){
+
+      editProfile();
+
+      return;
+
+    }
+
+
+    if(action === 'save-profile'){
+
+      saveProfile();
+
+      return;
+
+    }
+
+
+    if(action === 'cancel-edit'){
+
+      renderPanel();
+
+      return;
+
+    }
+
+
+    if(action === 'add-office'){
+
+      addOffice();
+
+      return;
+
+    }
+
+
+    if(action === 'add-service'){
+
+      addService();
+
+      return;
+
+    }
+
+
+    if(action === 'add-division'){
+
+      addDivision();
+
+      return;
+
+    }
+
+
+    if(action === 'add-unit'){
+
+      addUnit(
+        target.dataset.division
+      );
+
+      return;
+
+    }
+
+
+    if(action === 'add-division-personnel'){
+
+      addDivisionPersonnel(
+        target.dataset.division
+      );
+
+      return;
+
+    }
+
+
+    if(action === 'add-office-service'){
+
+      const officeId =
+        target.dataset.office;
+
+      const office =
+        offices.find(
+          item =>
+            item.id === officeId
+        );
+
+      if(!office){
+        return;
+      }
+
+      const name =
+        prompt(
+          `Service name under ${office.name}:`
+        );
+
+      if(!name){
+        return;
+      }
+
+      const clean =
+        name.trim();
+
+      if(
+        [...units,...proServices].some(
+          service =>
+            service.name.toLowerCase() ===
+            clean.toLowerCase()
+        )
+      ){
+
+        alert(
+          'That service already exists.'
+        );
+
+        return;
+
+      }
+
+      const functionText =
+        prompt(
+          'Service function:'
+        ) ||
+        'New service. Add divisions as needed.';
+
+      proServices.push({
+
+        name:clean,
+
+        code:'',
+
+        function:functionText.trim(),
+
+        office:officeId
+
+      });
+
+      saveOrganizationState();
+
+      renderAll();
+
+      renderOfficePanel(
+        officeId
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SHOW FUNCTIONS
+========================================================= */
+
+function showFunctions(unitName){
+
+  document
+    .querySelector(
+      '[data-tab="functional"]'
+    )
+    .click();
+
+  document
+    .querySelectorAll(
+      '.func-card'
+    )
+    .forEach(
+      card => {
+
+        card.style.outline =
+          card.dataset.unit ===
+          unitName
+            ? '2px solid #315efb'
+            : 'none';
+
+      }
+    );
+
 }
-{id:1,name:'Guray, Sharon G.',role:'Information Technology Officer III',unit:'Division Leadership',bio:'Division head shown at the top of the ISMD organizational chart.',experience:'',skills:[],achievements:''},
-{id:2,name:'VACANT',role:'Information Technology Officer II',unit:'Division Leadership',bio:'Vacant position directly below the division head.',experience:'',skills:[],achievements:''},
-{id:3,name:'VACANT',role:'Information Systems Analyst I',unit:'Division Leadership',bio:'Vacant position shown on the division leadership level.',experience:'',skills:[],achievements:''},
-{id:4,name:'Matus, Pauline Jane D.',role:'Information Systems Analyst I',unit:'Division Leadership',bio:'Position shown on the division leadership level of the organizational chart.',experience:'',skills:[],achievements:''},
-{id:5,name:'Contreras, Mary Claire R.',role:'Computer Maintenance Technologist I',unit:'Division Leadership',bio:'Position shown on the division leadership level of the organizational chart.',experience:'',skills:[],achievements:''},
-{id:6,name:'De Jesus, Donna E.',role:'Information Technology Officer I',unit:'ICT Support Service Unit',group:'A',bio:'Unit lead shown on the organizational chart.',experience:'',skills:[],achievements:''},
-{id:7,name:'Rioflorido, Dyan Krizlen R.',role:'Information Technology Officer I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Unit lead shown on the organizational chart.',experience:'',skills:[],achievements:''},
-{id:8,name:'Luchico, Malvin L.',role:'Information Technology Officer I',unit:'ICT Resource Management Unit',group:'C',bio:'Unit lead shown on the organizational chart.',experience:'',skills:[],achievements:''},
-{id:9,name:'Bagul, Ahmad L.',role:'Information Technology Officer I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Unit lead shown on the organizational chart.',experience:'',skills:[],achievements:''},
-{id:10,name:'Torrado, Joshua C.',role:'Information Systems Analyst II',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:11,name:'Banto, Aaron-O’Neil S.',role:'Information Systems Analyst II',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:12,name:'Dalawangbayan, Joven B.',role:'Computer Maintenance Technologist II',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:13,name:'Bulambao, Arnel B.',role:'Computer Maintenance Technologist II',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:14,name:'Andres, Bonn M.',role:'Computer Maintenance Technologist II',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:15,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'ICT Support Service Unit',group:'A',bio:'Vacant position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:16,name:'Ayong, Rodolfo C.',role:'Computer Maintenance Technologist I',unit:'ICT Support Service Unit',group:'A',bio:'Position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:17,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'ICT Support Service Unit',group:'A',bio:'Vacant position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:18,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'ICT Support Service Unit',group:'A',bio:'Vacant position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:19,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'ICT Support Service Unit',group:'A',bio:'Vacant position shown under continuation letter A on page 2.',experience:'',skills:[],achievements:''},
-{id:20,name:'Regalado, Edwin S.',role:'Computer Maintenance Technologist I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Additional Data Center and Network Operations personnel shown under the explicit unit heading on page 6.',experience:'',skills:[],achievements:''},
-{id:21,name:'Quintana, Genrey M.',role:'Information Systems Analyst II',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:22,name:'VACANT',role:'Information Systems Analyst II',unit:'Data Center and Network Operations Unit',group:'B',bio:'Vacant position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:23,name:'VACANT',role:'Computer Maintenance Technologist II',unit:'Data Center and Network Operations Unit',group:'B',bio:'Vacant position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:24,name:'Bagoisan, Ralph Daniel F.',role:'Computer Maintenance Technologist II',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:25,name:'VACANT',role:'Information Systems Analyst I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Vacant position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:26,name:'Fabro, Esteban Jr. H.',role:'Information Systems Analyst I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:27,name:'Pagulong, Rowena P.',role:'Computer Maintenance Technologist I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:28,name:'Rangel, Joseph Angelico R.',role:'Computer Maintenance Technologist I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:29,name:'Tangapa, John Gigi F.',role:'Computer Maintenance Technologist I',unit:'Data Center and Network Operations Unit',group:'B',bio:'Position shown under continuation letter B on page 3.',experience:'',skills:[],achievements:''},
-{id:30,name:'Lucero, Maribel C.',role:'Information Systems Analyst II',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:31,name:'Sablay, Ian Carlo D.',role:'Information Systems Analyst II',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:32,name:'Tenorio, Mark P.G.',role:'Computer Maintenance Technologist II',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:33,name:'Cachola, Jennylyn B.',role:'Computer Maintenance Technologist II',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:34,name:'Arcena, Andreia A.',role:'Information Systems Analyst I',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:35,name:'Olchondra, Miguel M.',role:'Information Systems Analyst I',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:36,name:'Dagasan, Abby Gail E.',role:'Computer Maintenance Technologist I',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:37,name:'Domingo, Mark Jerome S.',role:'Computer Maintenance Technologist I',unit:'ICT Resource Management Unit',group:'C',bio:'Position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:38,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'ICT Resource Management Unit',group:'C',bio:'Vacant position shown under continuation letter C on page 4.',experience:'',skills:[],achievements:''},
-{id:39,name:'Tolentino, Kate P.',role:'Information Systems Analyst I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Additional Information Systems Development and Management personnel shown under the explicit unit heading on page 6.',experience:'',skills:[],achievements:''},
-{id:40,name:'Rapis, Juliet Ann C.',role:'Information Systems Analyst I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Additional Information Systems Development and Management personnel shown under the explicit unit heading on page 6.',experience:'',skills:[],achievements:''},
-{id:41,name:'Dames, Marc Joseph C.',role:'Information Systems Analyst II',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:42,name:'Ablanque Jr., Artemio B.',role:'Information Systems Analyst II',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:43,name:'Mamauag, Clifford Jay C.',role:'Computer Maintenance Technologist II',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:44,name:'Viguilla, Fidel Rostum L.',role:'Computer Maintenance Technologist II',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:45,name:'VACANT',role:'Computer Maintenance Technologist I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Vacant position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:46,name:'VACANT',role:'Information Systems Analyst I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Vacant position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:47,name:'Jacinto, Eva Celine B.',role:'Computer Maintenance Technologist I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''},
-{id:48,name:'Collo, Jun P.',role:'Computer Maintenance Technologist I',unit:'Information Systems Development and Management Unit',group:'D',bio:'Position shown under continuation letter D on page 5.',experience:'',skills:[],achievements:''}
-];
-const divisions=[{id:'ISMD',name:'Information Systems Management Division',code:'ISMD',function:'Division responsible for ICT systems, services, resources, development, and management.',parent:'SISS'}];
-const units=[
-{name:'ICT Support Service Unit',code:'A',division:'ISMD',function:'Technical support, ICT installation and repair, network cabling, PhilSys registration helpdesk support, registration-kit support, and preventive/corrective maintenance.'},
-{name:'Data Center and Network Operations Unit',code:'B',division:'ISMD',function:'Network operations centers, disaster recovery sites, systems and servers, connectivity, service availability, server health, network components, and related technical operations.'},
-{name:'ICT Resource Management Unit',code:'C',division:'ISMD',function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'},
-{name:'Information Systems Development and Management Unit',code:'D',division:'ISMD',function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'}
-];
-const proServices=[];
-const offices=[];
-let people=JSON.parse(localStorage.getItem('sissIsmdPeopleV1')||'null')||initial;
-let selected=null;
-const $=id=>document.getElementById(id);
-function initials(n){return n.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase()}
-function avatar(p,big=false){return `<div class="${big?'bigavatar':'avatar'}">${p.photo?`<img src="${p.photo}" alt="">`:initials(p.name)}</div>`}
-function renderUnits(){const q=$('search').value.toLowerCase().trim();const tree=$('orgTree');const matches=s=>!q||String(s||'').toLowerCase().includes(q);const serviceCard=u=>{const ps=people.filter(p=>p.unit===u.name&&(!q||matches(`${p.name} ${p.role} ${u.name}`)));if(q&&!ps.length&&!matches(`${u.name} ${u.function}`))return '';return `<div class="unit"><div class="unit-head"><h3>${u.name}</h3><button onclick="showFunctions('${esc(u.name)}')">↗</button></div><div class="function">${u.function}</div><div class="people">${ps.map(p=>`<div class="person" onclick="selectPerson(${p.id})">${avatar(p)}<div><strong>${p.name}</strong><small>${p.role}</small></div></div>`).join('')}</div><button class="btn" style="width:100%;margin-top:9px" onclick="addPersonnel('${esc(u.name)}')">+ Add Personnel</button></div>`};const visibleDivisions=divisions.filter(d=>{const services=units.filter(u=>u.division===d.id);return !q||matches(d.name)||services.some(u=>matches(`${u.name} ${u.function}`)||people.some(p=>p.unit===u.name&&matches(`${p.name} ${p.role}`)));});const visibleProServices=proServices.filter(s=>!q||matches(`${s.name} ${s.function}`));const visibleOffices=offices.filter(o=>!q||matches(o.name));tree.innerHTML=`<div class="node root" onclick="selectOrg('PSA','office')"><div class="avatar">PSA</div><strong>Philippine Statistics Authority</strong><small>Parent Organization · Click to view</small></div><div class="connector"></div><div class="node root" onclick="selectOrg('PRO','office')" style="border-color:#6b7cff"><div class="avatar">PRO</div><strong>PRO</strong><small>Office Level · Click to manage children</small></div>${visibleOffices.length?`<div class="connector"></div><div class="units">${visibleOffices.map(o=>`<div class="unit"><div class="unit-head"><h3>${o.name}</h3></div><div class="function">Office under PRO</div><button class="btn" style="width:100%" onclick="selectOffice('${esc(o.id)}')">Manage Office</button></div>`).join('')}</div>`:''}${visibleProServices.length?`<div class="connector"></div><div class="section-title" style="width:100%;margin:0"><h2>Services directly under PRO</h2></div><div class="units">${visibleProServices.map(serviceCard).join('')}</div>`:''}${visibleDivisions.map(d=>{const services=units.filter(u=>u.division===d.id);return `<div class="connector"></div><div style="width:100%"><div class="node root" onclick="selectOrg('${esc(d.id)}','division')" style="margin:0 auto 12px"><div class="avatar">${d.code}</div><strong>${d.name}</strong><small>Division Level · Click to manage Services</small></div><div class="units">${services.map(serviceCard).join('')}</div></div>`}).join('')}`;$('employeeCount').textContent=people.length;$('divisionCount').textContent=divisions.length;$('unitCount').textContent=units.length+proServices.length;$('vacantCount').textContent=people.filter(p=>p.name==='VACANT').length}
-function selectPerson(id){selected=people.find(p=>p.id===id);renderPanel()}
-function renderPanel(){if(!selected){$('panel').innerHTML='<div class="empty"><strong>Select an employee</strong><br><span>Click a profile card in the organization chart.</span></div>';return}let p=selected;$('panel').innerHTML=`<div class="profile-head">${avatar(p,true)}<h2>${p.name}</h2><p>${p.role}</p><span class="tag">${p.unit}</span></div><div class="profile-section"><h4>About / Job Description</h4><p>${p.bio||'No profile information yet.'}</p></div><div class="profile-section"><h4>Experience</h4><p>${p.experience||'No experience information yet.'}</p></div><div class="profile-section"><h4>Skills</h4><div class="chips">${(p.skills||[]).map(s=>`<span class="chip">${s}</span>`).join('')||'<span class="muted">No skills added.</span>'}</div></div><div class="profile-section"><h4>Accomplishments</h4><p>${p.achievements||'No accomplishments added.'}</p></div><div style="padding-top:16px"><button class="btn primary" style="width:100%" onclick="editProfile()">Edit My Profile</button></div>`}
-function editProfile(){let p=selected;$('panel').innerHTML=`<div class="profile-head">${avatar(p,true)}<h2>Edit Profile</h2><p>${p.name}</p></div><div class="profile-section"><div class="edit-grid"><label>Full Name<input id="eName" value="${esc(p.name)}"></label><label>Position<input id="eRole" value="${esc(p.role)}"></label><label>About / Job Description<textarea id="eBio">${esc(p.bio||'')}</textarea></label><label>Work Experience<textarea id="eExp">${esc(p.experience||'')}</textarea></label><label>Skills <span class="muted">(comma separated)</span><input id="eSkills" value="${esc((p.skills||[]).join(', '))}"></label><label>Accomplishments<textarea id="eAch">${esc(p.achievements||'')}</textarea></label></div></div><div style="display:flex;gap:8px"><button class="btn primary" style="flex:1" onclick="saveProfile()">Save Changes</button><button class="btn" onclick="renderPanel()">Cancel</button></div>`}
-async function saveProfile(){selected.name=$('eName').value.trim()||selected.name;selected.role=$('eRole').value.trim()||selected.role;selected.bio=$('eBio').value.trim();selected.experience=$('eExp').value.trim();selected.skills=$('eSkills').value.split(',').map(x=>x.trim()).filter(Boolean);selected.achievements=$('eAch').value.trim();const photoInput=$('ePhoto');if(photoInput&&photoInput.dataset.photo)selected.photo=photoInput.dataset.photo;people=people.map(p=>p.id===selected.id?selected:p);try{localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));await savePersonToSupabase(selected)}catch(e){alert('The profile was saved locally, but could not be saved to Supabase. '+e.message);console.error(e);return}renderUnits();renderPanel()}
-function editProfile(){let p=selected;$('panel').innerHTML='<div class="profile-head">'+avatar(p,true)+'<h2>Edit Profile</h2><p>'+esc(p.name)+'</p></div><div class="profile-section"><div class="edit-grid"><label>Profile Picture<input id="ePhoto" type="file" accept="image/*" onchange="previewPhoto(this)"><span class="muted">Upload an employee photo.</span></label><div id="photoPreview" style="text-align:center;padding:6px">'+(p.photo?'<img src="'+p.photo+'" style="width:88px;height:88px;border-radius:50%;object-fit:cover">':'<span class="muted">No photo uploaded.</span>')+'</div><label>Full Name<input id="eName" value="'+esc(p.name)+'"></label><label>Position<input id="eRole" value="'+esc(p.role)+'"></label><label>About / Job Description<textarea id="eBio">'+esc(p.bio||'')+'</textarea></label><label>Work Experience<textarea id="eExp">'+esc(p.experience||'')+'</textarea></label><label>Skills <span class="muted">(comma separated)</span><input id="eSkills" value="'+esc((p.skills||[]).join(', '))+'"></label><label>Accomplishments<textarea id="eAch">'+esc(p.achievements||'')+'</textarea></label></div></div><div style="display:flex;gap:8px"><button class="btn primary" style="flex:1" onclick="saveProfile()">Save Changes</button><button class="btn" onclick="renderPanel()">Cancel</button></div>'}
-function previewPhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Please select an image file.');input.value='';return}const reader=new FileReader();reader.onload=()=>{const box=$('photoPreview');if(box)box.innerHTML='<img src="'+reader.result+'" style="width:88px;height:88px;border-radius:50%;object-fit:cover">';input.dataset.photo=reader.result};reader.readAsDataURL(file)}
-async function saveProfile(){selected.name=$('eName').value.trim()||selected.name;selected.role=$('eRole').value.trim()||selected.role;selected.bio=$('eBio').value.trim();selected.experience=$('eExp').value.trim();selected.skills=$('eSkills').value.split(',').map(x=>x.trim()).filter(Boolean);selected.achievements=$('eAch').value.trim();const photoInput=$('ePhoto');if(photoInput&&photoInput.dataset.photo)selected.photo=photoInput.dataset.photo;people=people.map(p=>p.id===selected.id?selected:p);try{localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));await savePersonToSupabase(selected)}catch(e){alert('The profile was saved locally, but could not be saved to Supabase. '+e.message);console.error(e);return}renderUnits();renderPanel()}
-function esc(s){return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
-function selectOrg(id,type){renderOrgActions(id,type)}
-function selectService(serviceName){const u=units.find(x=>x.name===serviceName)||proServices.find(x=>x.name===serviceName);if(!u)return;$('panel').innerHTML=`<div class="profile-head"><div class="bigavatar">S</div><h2>${u.name}</h2><p>Service Level</p></div><div class="profile-section"><h4>Service Actions</h4><p>${u.function}</p></div><div style="display:grid;gap:9px;padding-top:14px"><button class="btn primary" type="button" onclick="addDivision('${esc(u.name)}')">+ Add Division</button></div>`}
-function selectOffice(id){const o=offices.find(x=>x.id===id);if(!o)return;$('panel').innerHTML=`<div class="profile-head"><div class="bigavatar">OFF</div><h2>${o.name}</h2><p>Office Level</p></div><div class="profile-section"><h4>Organization Actions</h4><p>An Office can contain Services only. Select a Service to add Divisions.</p></div><div style="display:grid;gap:9px;padding-top:14px"><button class="btn primary" onclick="addOfficeService('${esc(o.id)}')">+ Add Service</button></div>`}
-function renderOrgActions(id,type){const isPro=id==='PRO';const isPsa=id==='PSA';const d=divisions.find(x=>x.id===id);$('panel').innerHTML=`<div class="profile-head"><div class="bigavatar">${isPsa?'PSA':isPro?'PRO':d?.code||''}</div><h2>${isPsa?'Philippine Statistics Authority':isPro?'PRO':d?.name||id}</h2><p>${isPsa?'Parent Organization':isPro?'PRO Level':'Division Level'}</p></div><div class="profile-section"><h4>Organization Actions</h4><p>${isPsa?'PSA can contain Offices. Select PRO to manage PRO-level children.':isPro?'PRO can contain Offices, Services, and Divisions.':'A Division can contain Units and Personnel.'}</p></div><div style="display:grid;gap:9px;padding-top:14px">${isPsa?'<button class="btn primary" onclick="addOffice()">+ Add Office</button>':''}${isPro?'<button class="btn primary" onclick="addService(\'PRO\')">+ Add Service</button><button class="btn" onclick="addDivision()">+ Add Division</button>':''}${!isPsa&&!isPro&&d?'<button class="btn primary" onclick="addUnit(\''+esc(d.id)+'\')">+ Add Unit</button><button class="btn" onclick="addDivisionPersonnel(\''+esc(d.id)+'\')">+ Add Personnel</button>':''}</div>`}
-function addService(parent){const name=prompt(`Service name under ${parent}:`);if(!name)return;const clean=name.trim();const allNames=[...units,...proServices].map(u=>u.name.toLowerCase());if(allNames.includes(clean.toLowerCase())){alert('That service already exists.');return}const code=prompt('Service code (optional):')||'';const service={name:clean,code:code.trim(),function:'New service. Add personnel as needed.'};if(parent==='PRO')proServices.push(service);else units.push({...service,division:parent});renderUnits();renderFunctions();selectOrg(parent,parent==='PRO'?'office':'division')}
-function addOffice(){const name=prompt('Office name under PSA:');if(!name)return;const clean=name.trim();if(offices.some(o=>o.name.toLowerCase()===clean.toLowerCase())){alert('That office already exists.');return}offices.push({id:'OFFICE_'+Date.now(),name:clean,parent:'PSA'});renderUnits();renderOrgActions('PSA','office')}
-function addOfficeService(officeId){const office=offices.find(o=>o.id===officeId);if(!office)return;const name=prompt(`Service name under ${office.name}:`);if(!name)return;const clean=name.trim();const service={name:clean,code:'',function:'New service. Add divisions as needed.',office:officeId};proServices.push(service);renderUnits();selectOffice(officeId)}
-async function addDivisionPersonnel(divisionId){const d=divisions.find(x=>x.id===divisionId);if(!d)return;const name=prompt(`Personnel name for ${d.name}:`);if(!name)return;const role=prompt('Position / role:')||'Position';const id=Math.max(0,...people.map(p=>p.id))+1;const person={id,name:name.trim(),role:role.trim(),unit:d.name,bio:'',experience:'',skills:[],achievements:''};people.push(person);localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));try{await insertPersonToSupabase(person)}catch(e){alert('The personnel was added locally, but could not be saved to Supabase. '+e.message);console.error(e)}renderUnits()}
-async function addPersonnel(unit){const name=prompt(`Personnel name for ${unit}:`);if(!name)return;const role=prompt('Position / role:')||'Position';const id=Math.max(0,...people.map(p=>p.id))+1;const person={id,name:name.trim(),role:role.trim(),unit,bio:'',experience:'',skills:[],achievements:''};people.push(person);localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));try{await insertPersonToSupabase(person)}catch(e){alert('The personnel was added locally, but could not be saved to Supabase. '+e.message);console.error(e)}renderUnits()}
-function showFunctions(unit){document.querySelector('[data-tab="functional"]').click();document.querySelectorAll('.func-card').forEach(x=>x.style.outline=x.dataset.unit===unit?'2px solid #315efb':'none')}
-function addUnit(divisionId){const d=divisions.find(x=>x.id===divisionId);if(!d)return;const name=prompt(`Unit name under ${d.name}:`);if(!name)return;const clean=name.trim();if(units.some(u=>u.name.toLowerCase()===clean.toLowerCase())){alert('That unit already exists.');return}const code=prompt('Unit code (optional):')||'';units.push({name:clean,code:code.trim(),division:divisionId,function:'New unit. Add personnel as needed.'});renderUnits();renderFunctions();selectOrg(divisionId,'division')}
-function addDivision(parentService){const service=parentService?proServices.find(s=>s.name===parentService)||units.find(u=>u.name===parentService):null;if(parentService&&!service)return;const code=prompt('Division code (example: XYZ):');if(!code)return;const name=prompt('Division name:');if(!name)return;if(divisions.some(d=>d.id.toLowerCase()===code.trim().toLowerCase())){alert('That division code already exists.');return}divisions.push({id:code.trim().toUpperCase(),code:code.trim().toUpperCase(),name:name.trim(),function:'New division. Add units and personnel as needed.',service:parentService||null});renderUnits();renderFunctions();if(parentService)selectService(parentService);else selectOrg('PRO','office')}
-function renderFunctions(){ $('functions').innerHTML=units.map(u=>`<div class="func-card" data-unit="${u.name}"><h3>${u.name}</h3><p>${u.function}</p></div>`).join('') }
-$('search').addEventListener('input',renderUnits);$('resetBtn').onclick=()=>{people=JSON.parse(JSON.stringify(initial));localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));selected=null;renderUnits();renderPanel()};
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');let functional=t.dataset.tab==='functional';$('orgView').style.display=functional?'none':'block';$('functionalView').classList.toggle('show',functional)});
-function renderOrgActions(id,type){const isPsa=id==='PSA',isPro=id==='PRO',isSiss=id==='SISS',d=divisions.find(x=>x.id===id);$('panel').innerHTML='<div class="profile-head"><div class="bigavatar">'+(isPsa?'PSA':isPro?'PRO':isSiss?'SISS':d?.code||'')+'</div><h2>'+(isPsa?'Philippine Statistics Authority':isPro?'PRO':isSiss?'SISS':d?.name||id)+'</h2><p>'+(isPsa?'Parent Organization':isPro?'Office Level':isSiss?'Service Level Parent':'Division Level')+'</p></div><div class="profile-section"><h4>Organization Actions</h4><p>'+(isPsa?'PSA contains PRO.':isPro?'PRO contains SISS.':isSiss?'SISS can contain Divisions.':'A Division can contain Units and Personnel.')+'</p></div><div style="display:grid;gap:9px;padding-top:14px">'+(isSiss?'<button class="btn primary" onclick="addDivision()">+ Add Division</button>':'')+(!isPsa&&!isPro&&!isSiss&&d?'<button class="btn primary" onclick="addUnit(\''+esc(d.id)+'\')">+ Add Unit</button><button class="btn" onclick="addDivisionPersonnel(\''+esc(d.id)+'\')">+ Add Personnel</button>':'')+'</div>'}
-function addDivision(){const code=prompt('Division code (example: XYZ):');if(!code)return;const name=prompt('Division name:');if(!name)return;if(divisions.some(d=>d.id.toLowerCase()===code.trim().toLowerCase())){alert('That division code already exists.');return}divisions.push({id:code.trim().toUpperCase(),code:code.trim().toUpperCase(),name:name.trim(),function:'New division. Add units and personnel as needed.',parent:'SISS'});renderUnits();renderFunctions();selectOrg('SISS','siss')}
-function renderUnitsCore(){const q=$('search').value.toLowerCase().trim(),tree=$('orgTree'),matches=s=>!q||String(s||'').toLowerCase().includes(q);const serviceCard=u=>{const ps=people.filter(p=>p.unit===u.name&&(!q||matches(p.name+' '+p.role+' '+u.name)));if(q&&!ps.length&&!matches(u.name+' '+u.function))return '';return '<div class="unit" onclick="selectService(\''+esc(u.name)+'\')" style="cursor:pointer"><div class="unit-head"><h3>'+esc(u.name)+'</h3><button onclick="event.stopPropagation();showFunctions(\''+esc(u.name)+'\')">↗</button></div><div class="function">'+esc(u.function)+'</div><div class="people">'+ps.map(p=>'<div class="person" onclick="event.stopPropagation();selectPerson('+p.id+')">'+avatar(p)+'<div><strong>'+esc(p.name)+'</strong><small>'+esc(p.role)+'</small></div></div>').join('')+'</div><button class="btn" style="width:100%;margin-top:9px" onclick="event.stopPropagation();addPersonnel(\''+esc(u.name)+'\')">+ Add Personnel</button></div>'};const visibleDivisions=divisions.filter(d=>{const services=units.filter(u=>u.division===d.id);return !q||matches(d.name)||services.some(u=>matches(u.name+' '+u.function)||people.some(p=>p.unit===u.name&&matches(p.name+' '+p.role)))});const visibleProServices=proServices.filter(s=>!q||matches(s.name+' '+s.function));const visibleOffices=offices.filter(o=>!q||matches(o.name));tree.innerHTML='<div class="node root" onclick="selectOrg(\'PSA\',\'office\')"><div class="avatar">PSA</div><strong>Philippine Statistics Authority</strong><small>Parent Organization · Click to view</small></div><div class="connector"></div><div class="node root" onclick="selectOrg(\'PRO\',\'office\')" style="border-color:#6b7cff"><div class="avatar">PRO</div><strong>PRO</strong><small>Office Level · Click to manage children</small></div><div class="connector"></div><div id="sissBranch" style="width:100%"><div class="node root" id="sissChartNode" onclick="selectOrg(\'SISS\',\'siss\')" style="border-color:#6b7cff;margin:0 auto 12px"><div class="avatar">SISS</div><strong>SISS</strong><small>Service Level Parent · Click to manage Divisions</small></div>'+visibleDivisions.map(d=>{const services=units.filter(u=>u.division===d.id);return '<div class="connector"></div><div style="width:100%"><div class="node root" onclick="selectOrg(\''+esc(d.id)+'\',\'division\')" style="margin:0 auto 12px"><div class="avatar">'+d.code+'</div><strong>'+d.name+'</strong><small>Division Level · Click to manage Services</small></div><div class="units">'+services.map(serviceCard).join('')+'</div></div>'}).join('')+'</div>'+(visibleOffices.length?'<div class="connector"></div><div class="section-title" style="width:100%;margin:0"><h2>Offices under PSA</h2></div><div class="units">'+visibleOffices.map(o=>'<div class="unit"><div class="unit-head"><h3>'+o.name+'</h3></div><div class="function">Office under PSA</div><button class="btn" style="width:100%" onclick="selectOffice(\''+esc(o.id)+'\')">Manage Office</button></div>').join('')+'</div>':'')+(visibleProServices.length?'<div class="connector"></div><div class="section-title" style="width:100%;margin:0"><h2>Services directly under PRO</h2></div><div class="units">'+visibleProServices.map(serviceCard).join('')+'</div>':'');$('employeeCount').textContent=people.length;$('divisionCount').textContent=divisions.length;$('unitCount').textContent=units.length+proServices.length;$('vacantCount').textContent=people.filter(p=>p.name==='VACANT').length}
-function renderOrgActions(id,type){const isPro=id==='PRO',isPsa=id==='PSA',isSiss=id==='SISS',d=divisions.find(x=>x.id===id);$('panel').innerHTML='<div class="profile-head"><div class="bigavatar">'+(isPsa?'PSA':isPro?'PRO':isSiss?'SISS':d?.code||'')+'</div><h2>'+(isPsa?'Philippine Statistics Authority':isPro?'PRO':isSiss?'SISS':d?.name||id)+'</h2><p>'+(isPsa?'Parent Organization':isPro?'Office Level':isSiss?'Service Level Parent':'Division Level')+'</p></div><div class="profile-section"><h4>Organization Structure</h4><p>'+(isPsa?'Parent organization containing the Regional Office and its organizational branches.':isPro?'Regional Office with SISS as its Service Level Parent.':isSiss?'Service Level Parent containing the ISMD division.':'Division containing its assigned units and personnel.')+'</p></div>'}
-function showOfficeForm(){renderOrgActions('PSA','psa')}
-function saveNewOffice(){const name=$('newOfficeName').value.trim();if(!name){alert('Please enter an office name.');return}if(offices.some(o=>o.name.toLowerCase()===name.toLowerCase())){alert('That office already exists.');return}offices.push({id:'OFFICE_'+Date.now(),name,parent:'PSA',code:$('newOfficeCode').value.trim()});renderUnits();selectOrg('PSA','psa')}
-function showServiceForm(){renderOrgActions('PRO','pro')}
-function saveNewService(){const name=$('newServiceName').value.trim();if(!name){alert('Please enter a service name.');return}if([...units,...proServices].some(u=>u.name.toLowerCase()===name.toLowerCase())){alert('That service already exists.');return}proServices.push({name,code:$('newServiceCode').value.trim(),function:$('newServiceFunction').value.trim()||'New service. Add personnel as needed.',parent:'PRO'});renderUnits();selectOrg('PRO','pro')}
-function addOffice(){showOfficeForm()}
-function addService(parent){showServiceForm()}
-function selectOffice(id){const o=offices.find(x=>x.id===id);if(!o)return;$('panel').innerHTML='<div class="profile-head"><div class="bigavatar">OFF</div><h2>'+esc(o.name)+'</h2><p>Office under PSA</p></div><div class="profile-section"><h4>Organization Structure</h4><p>This Office is part of PSA. Its organizational structure is displayed in the chart.</p></div>'}
-function showOfficeServiceForm(officeId){selectOffice(officeId)}
-function saveOfficeService(officeId){const name=$('newOfficeServiceName').value.trim();if(!name){alert('Please enter a service name.');return}if([...units,...proServices].some(u=>u.name.toLowerCase()===name.toLowerCase())){alert('That service already exists.');return}proServices.push({name,code:$('newOfficeServiceCode').value.trim(),function:$('newOfficeServiceFunction').value.trim()||'New service. Add divisions as needed.',office:officeId});renderUnits();selectOffice(officeId)}
-function selectService(serviceName){const u=units.find(x=>x.name===serviceName)||proServices.find(x=>x.name===serviceName);if(!u)return;$('panel').innerHTML='<div class="profile-head"><div class="bigavatar">S</div><h2>'+esc(u.name)+'</h2><p>Service Level</p></div><div class="profile-section"><h4>Service Information</h4><p>'+esc(u.function)+'</p></div>'}
-function showServicePersonnelForm(serviceName){$('panel').innerHTML='<div class="profile-head"><div class="bigavatar">P</div><h2>Add Personnel</h2><p>Personnel under '+esc(serviceName)+'</p></div><div class="profile-section"><div class="edit-grid"><label>Full Name<input id="newServicePersonName" placeholder="Enter name"></label><label>Position / Role<input id="newServicePersonRole" placeholder="Enter position"></label></div></div><div style="display:flex;gap:8px"><button class="btn primary" style="flex:1" onclick="saveServicePersonnel(\''+esc(serviceName)+'\')">Add Personnel</button></div>'}
-async function saveServicePersonnel(serviceName){const name=$('newServicePersonName').value.trim();if(!name){alert('Please enter a name.');return}const role=$('newServicePersonRole').value.trim()||'Position';const id=Math.max(0,...people.map(p=>p.id))+1;const person={id,name,role,unit:serviceName,bio:'',experience:'',skills:[],achievements:''};people.push(person);localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people));try{await insertPersonToSupabase(person)}catch(e){alert('The personnel was added locally, but could not be saved to Supabase. '+e.message);console.error(e)}renderUnits();selectService(serviceName)}
-function renderOfficeSection(){if(!offices.length)return '';return '<div class="connector"></div><div class="section-title" style="width:100%;margin:0"><h2>Offices under PSA</h2></div><div class="units">'+offices.map(o=>'<div class="unit" onclick="selectOffice(\''+esc(o.id)+'\')" style="cursor:pointer"><div class="unit-head"><h3>'+esc(o.name)+'</h3></div><div class="function">Office under PSA</div><button class="btn primary" style="width:100%" onclick="event.stopPropagation();selectOffice(\''+esc(o.id)+'\')">Manage Office</button></div>').join('')+'</div>'}
-const baseRenderUnits=renderUnitsCore;function renderUnits(){baseRenderUnits()}renderFunctions();renderUnits();renderPanel();loadPeopleFromSupabase();
+
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
+
+$('resetBtn').addEventListener(
+  'click',
+  resetLocalData
+);
+
+
+/* =========================================================
+   RENDER EVERYTHING
+========================================================= */
+
+function renderAll(){
+
+  renderOrgTree();
+
+  renderFunctions();
+
+  renderSummary();
+
+  renderPanel();
+
+}
+
+
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
+renderAll();
+
+loadPeopleFromSupabase();
+
 </script>
-</body></html>
+
+</body>
+</html>
