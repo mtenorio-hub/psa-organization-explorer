@@ -30,17 +30,158 @@
 </div></div>
 <script>
 const SUPABASE_URL='https://lxvehdskwneoxbbokfq.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_ZzELacFxGnsoUb4lA9Jr7A_2YSMqZZ7';
+const SUPABASE_ANON_KEY='sb_publishable_ZzELAcFxGnsoUb4lA9Jr7A_2YSMqZZ7';
 const SUPABASE_TABLE='organization_people';
+
 let supabaseConnected=false;
-const supabaseHeaders=()=>({'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=representation'});
-async function supabaseRequest(path,options={}){const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{...options,headers:{...supabaseHeaders(),...(options.headers||{})}});if(!r.ok){const msg=await r.text();throw new Error(msg||('Supabase request failed: '+r.status))}return r.status===204?null:r.json()}
-function supabasePerson(person){return {id:person.id,name:person.name,role:person.role,unit:person.unit,group_code:person.group_code||person.group||null,bio:person.bio||'',experience:person.experience||'',skills:Array.isArray(person.skills)?person.skills:[],achievements:person.achievements||'',photo:person.photo||null}}
-function normalizeSupabasePerson(person){return {...person,group:person.group_code||person.group||undefined}}
-async function loadPeopleFromSupabase(){try{const rows=await supabaseRequest(SUPABASE_TABLE+'?select=*&order=id.asc');if(Array.isArray(rows)){supabaseConnected=true;if(rows.length){people=rows.map(normalizeSupabasePerson);localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people))}else{await supabaseRequest(SUPABASE_TABLE,{method:'POST',body:JSON.stringify(initial.map(supabasePerson))});people=JSON.parse(JSON.stringify(initial));localStorage.setItem('sissIsmdPeopleV1',JSON.stringify(people))}renderUnits();if(selected){selected=people.find(p=>p.id===selected.id)||null;renderPanel()}}}catch(e){console.warn('Supabase unavailable; using local data.',e);supabaseConnected=false}}
-async function savePersonToSupabase(person){if(!supabaseConnected)return;await supabaseRequest(SUPABASE_TABLE+'?id=eq.'+encodeURIComponent(person.id),{method:'PATCH',body:JSON.stringify(supabasePerson(person))})}
-async function insertPersonToSupabase(person){if(!supabaseConnected)return;await supabaseRequest(SUPABASE_TABLE,{method:'POST',body:JSON.stringify(supabasePerson(person))})}
-const initial=[
+
+const supabaseHeaders=()=>({
+  'apikey':SUPABASE_ANON_KEY,
+  'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+  'Content-Type':'application/json',
+  'Prefer':'return=representation'
+});
+
+async function supabaseRequest(path,options={}){
+  const response=await fetch(
+    SUPABASE_URL+'/rest/v1/'+path,
+    {
+      ...options,
+      headers:{
+        ...supabaseHeaders(),
+        ...(options.headers||{})
+      }
+    }
+  );
+
+  if(!response.ok){
+    const message=await response.text();
+    throw new Error(
+      message || ('Supabase request failed: '+response.status)
+    );
+  }
+
+  return response.status===204 ? null : response.json();
+}
+
+function supabasePerson(person){
+  return {
+    id:person.id,
+    name:person.name,
+    role:person.role,
+    unit:person.unit,
+    group_code:person.group_code || person.group || null,
+    bio:person.bio || '',
+    experience:person.experience || '',
+    skills:Array.isArray(person.skills) ? person.skills : [],
+    achievements:person.achievements || '',
+    photo:person.photo || null
+  };
+}
+
+function normalizeSupabasePerson(person){
+  return {
+    ...person,
+    group:person.group_code || person.group || undefined
+  };
+}
+
+async function loadPeopleFromSupabase(){
+  try{
+    const rows=await supabaseRequest(
+      SUPABASE_TABLE+'?select=*&order=id.asc'
+    );
+
+    if(Array.isArray(rows)){
+      supabaseConnected=true;
+
+      console.log(
+        'Supabase connected. Records loaded:',
+        rows.length
+      );
+
+      if(rows.length){
+        people=rows.map(normalizeSupabasePerson);
+
+        localStorage.setItem(
+          'sissIsmdPeopleV1',
+          JSON.stringify(people)
+        );
+      }else{
+        await supabaseRequest(
+          SUPABASE_TABLE,
+          {
+            method:'POST',
+            body:JSON.stringify(
+              initial.map(supabasePerson)
+            )
+          }
+        );
+
+        people=JSON.parse(JSON.stringify(initial));
+
+        localStorage.setItem(
+          'sissIsmdPeopleV1',
+          JSON.stringify(people)
+        );
+
+        console.log(
+          'Supabase table was empty. Uploaded initial records:',
+          people.length
+        );
+      }
+
+      renderUnits();
+
+      if(selected){
+        selected=
+          people.find(p=>p.id===selected.id) || null;
+
+        renderPanel();
+      }
+    }
+  }catch(error){
+    supabaseConnected=false;
+
+    console.error(
+      'Supabase connection failed. Using local data instead.',
+      error
+    );
+  }
+}
+
+async function savePersonToSupabase(person){
+  if(!supabaseConnected){
+    throw new Error('Supabase is not connected.');
+  }
+
+  await supabaseRequest(
+    SUPABASE_TABLE+'?id=eq.'+
+    encodeURIComponent(person.id),
+    {
+      method:'PATCH',
+      body:JSON.stringify(
+        supabasePerson(person)
+      )
+    }
+  );
+}
+
+async function insertPersonToSupabase(person){
+  if(!supabaseConnected){
+    throw new Error('Supabase is not connected.');
+  }
+
+  await supabaseRequest(
+    SUPABASE_TABLE,
+    {
+      method:'POST',
+      body:JSON.stringify(
+        supabasePerson(person)
+      )
+    }
+  );
+}
 {id:1,name:'Guray, Sharon G.',role:'Information Technology Officer III',unit:'Division Leadership',bio:'Division head shown at the top of the ISMD organizational chart.',experience:'',skills:[],achievements:''},
 {id:2,name:'VACANT',role:'Information Technology Officer II',unit:'Division Leadership',bio:'Vacant position directly below the division head.',experience:'',skills:[],achievements:''},
 {id:3,name:'VACANT',role:'Information Systems Analyst I',unit:'Division Leadership',bio:'Vacant position shown on the division leadership level.',experience:'',skills:[],achievements:''},
