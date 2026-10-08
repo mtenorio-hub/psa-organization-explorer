@@ -596,6 +596,50 @@ textarea{
     min-width:200px;
   }
 }
+
+/* =========================================================
+   FUNCTIONAL CHART POSITION DESCRIPTION STYLING
+========================================================= */
+
+.func-unit-description{
+  margin-bottom:14px;
+  line-height:1.5;
+}
+
+.func-positions{
+  display:grid;
+  gap:10px;
+  margin-top:12px;
+}
+
+.func-position{
+  border:1px solid light-dark(#dfe5ee,#303a49);
+  border-radius:10px;
+  padding:11px;
+  background:light-dark(#f8fafc,#111722);
+}
+
+.func-position h4{
+  margin:0 0 8px 0;
+  font-size:13px;
+  color:light-dark(#1f3f72,#dbe7ff);
+}
+
+.func-position ul{
+  margin:0;
+  padding-left:20px;
+}
+
+.func-position li{
+  margin:0 0 6px 0;
+  line-height:1.45;
+  font-size:12px;
+}
+
+.func-position li:last-child{
+  margin-bottom:0;
+}
+
 </style>
 </head>
 
@@ -1956,25 +2000,18 @@ function normalizePerson(person){
 
 }
 
-function normalizeSupabasePerson(person){
-    return {...person,group:person.group_code||person.group||undefined}
-}
 
 function fromSupabasePerson(person){
-    return normalizeSupabasePerson(person);
+  return normalizeSupabasePerson(person);
 }
 
-function updateDataStatus(message,connected=false){
-    const el=$('dataStatus');
-    if(el){
-        el.textContent=message;
-        el.title=connected
-            ? 'Supabase data is active.'
-            : 'Supabase request failed; local browser data is being used.';
-        el.style.color=connected?'#16794a':'#b54708';
-    }
-}
 
+function normalizeSupabasePerson(person){
+  return {
+    ...person,
+    group: person.group_code || person.group || undefined
+  };
+}
 
 async function loadPeopleFromSupabase(){
 
@@ -1999,11 +2036,6 @@ async function loadPeopleFromSupabase(){
 
     supabaseConnected = true;
 
-    updateStatus(
-      'connected',
-      `Supabase connected · ${rows.length} records`
-    );
-
     console.log(
       'Supabase connected.',
       rows.length,
@@ -2012,8 +2044,8 @@ async function loadPeopleFromSupabase(){
 
 
     /*
-       If the table is empty, upload the
-       48 initial records automatically.
+       If the table is empty, upload ALL initial
+       Functional Chart personnel automatically.
     */
 
     if(rows.length === 0){
@@ -2049,14 +2081,131 @@ async function loadPeopleFromSupabase(){
 
     }else{
 
-      people =
+      /*
+         IMPORTANT:
+
+         The Functional Chart "initial" array remains
+         the master list of personnel.
+
+         Supabase only supplies saved/updated data.
+
+         This prevents personnel such as ODC personnel
+         from disappearing simply because they are not
+         yet present in Supabase.
+      */
+
+      const supabasePeople =
         rows.map(fromSupabasePerson);
+
+
+      const supabaseById =
+        new Map(
+          supabasePeople.map(person => [
+            String(person.id),
+            person
+          ])
+        );
+
+
+      /*
+         Start with EVERY person from the Functional Chart.
+      */
+
+      people =
+        initial.map(person => {
+
+          const saved =
+            supabaseById.get(
+              String(person.id)
+            );
+
+
+          /*
+             If this person exists in Supabase,
+             apply the Supabase data on top of the
+             Functional Chart data.
+          */
+
+          if(saved){
+
+            return {
+              ...person,
+              ...saved
+            };
+
+          }
+
+
+          /*
+             If the person does not exist in Supabase,
+             keep the Functional Chart record.
+          */
+
+          return {
+            ...person
+          };
+
+        });
+
+
+      /*
+         Also preserve any additional personnel that
+         exist in Supabase but are not yet in the
+         Functional Chart data.
+      */
+
+      const initialIds =
+        new Set(
+          initial.map(
+            person => String(person.id)
+          )
+        );
+
+
+      supabasePeople.forEach(
+        person => {
+
+          if(
+            !initialIds.has(
+              String(person.id)
+            )
+          ){
+
+            people.push({
+              ...person
+            });
+
+          }
+
+        }
+      );
+
 
       saveLocalPeople();
 
-    }
 
-    renderAll();
+      updateStatus(
+        'connected',
+        `Supabase connected · ${people.length} records`
+      );
+
+
+      console.log(
+        'Functional Chart personnel:',
+        initial.length
+      );
+
+      console.log(
+        'Supabase personnel:',
+        supabasePeople.length
+      );
+
+      console.log(
+        'Final personnel list:',
+        people.length
+      );
+
+    }
 
   }catch(error){
 
@@ -2077,38 +2226,6 @@ async function loadPeopleFromSupabase(){
   }
 
 }
-
-
-async function savePersonToSupabase(person){
-
-  if(!supabaseConnected){
-
-    throw new Error(
-      'Supabase is not connected.'
-    );
-
-  }
-
-  await supabaseRequest(
-
-    SUPABASE_TABLE +
-    '?id=eq.' +
-    encodeURIComponent(person.id),
-
-    {
-
-      method:'PATCH',
-
-      body:JSON.stringify(
-        toSupabasePerson(person)
-      )
-
-    }
-
-  );
-
-}
-
 
 async function insertPersonToSupabase(person){
 
