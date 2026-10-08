@@ -750,7 +750,7 @@ const initial = [
     id:1,
     name:'Guray, Sharon G.',
     role:'Information Technology Officer III',
-    unit:'Division Leadership',
+    unit:'Office of the Division Chief',
     bio:'Division head shown at the top of the ISMD organizational chart.',
     experience:'',
     skills:[],
@@ -761,7 +761,7 @@ const initial = [
     id:2,
     name:'VACANT',
     role:'Information Technology Officer II',
-    unit:'Division Leadership',
+    unit:'Office of the Division Chief',
     bio:'Vacant position directly below the division head.',
     experience:'',
     skills:[],
@@ -772,7 +772,7 @@ const initial = [
     id:3,
     name:'VACANT',
     role:'Information Systems Analyst I',
-    unit:'Division Leadership',
+    unit:'Office of the Division Chief',
     bio:'Vacant position shown on the division leadership level.',
     experience:'',
     skills:[],
@@ -783,7 +783,7 @@ const initial = [
     id:4,
     name:'Matus, Pauline Jane D.',
     role:'Information Systems Analyst I',
-    unit:'Division Leadership',
+    unit:'Office of the Division Chief',
     bio:'Position shown on the division leadership level of the organizational chart.',
     experience:'',
     skills:[],
@@ -794,7 +794,7 @@ const initial = [
     id:5,
     name:'Contreras, Mary Claire R.',
     role:'Computer Maintenance Technologist I',
-    unit:'Division Leadership',
+    unit:'Office of the Division Chief',
     bio:'Position shown on the division leadership level of the organizational chart.',
     experience:'',
     skills:[],
@@ -1339,31 +1339,38 @@ const divisions = [
 const units = [
 
   {
-    name:'ICT Support Service Unit',
+    name:'Office of the Division Chief',
+    code:'ODC',
+    division:'ISMD',
+    function:'Provides overall leadership, direction, coordination, planning, supervision, and management of the Information Systems Management Division and its functional units.'
+  },
+
+  {
+    name:'Data Center and Network Operations Unit',
     code:'A',
+    division:'ISMD',
+    function:'Network operations centers, data centers, disaster recovery sites, systems, servers, connectivity, service availability, server health, network components, and related technical operations.'
+  },
+
+  {
+    name:'ICT Support Service Unit',
+    code:'B',
     division:'ISMD',
     function:'Technical support, ICT installation and repair, network cabling, PhilSys registration helpdesk support, registration-kit support, and preventive/corrective maintenance.'
   },
 
   {
-    name:'Data Center and Network Operations Unit',
-    code:'B',
+    name:'Information Systems Development and Management Unit',
+    code:'C',
     division:'ISMD',
-    function:'Network operations centers, disaster recovery sites, systems and servers, connectivity, service availability, server health, network components, and related technical operations.'
+    function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
   },
 
   {
     name:'ICT Resource Management Unit',
-    code:'C',
-    division:'ISMD',
-    function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
-  },
-
-  {
-    name:'Information Systems Development and Management Unit',
     code:'D',
     division:'ISMD',
-    function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
+    function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
   }
 
 ];
@@ -1371,6 +1378,174 @@ const units = [
 let proServices = [];
 
 let offices = [];
+
+
+
+/* =========================================================
+   OFFICIAL FUNCTIONAL CHART POSITION DESCRIPTIONS
+   Source: Draft 2026 ISMD Functional Chart
+========================================================= */
+
+const positionFunctions = {
+
+  'Office of the Division Chief': {
+
+    'Information Technology Officer III': [
+      'Plans, organizes, controls, monitors, and evaluates the different Information Technology activities of the division to be conducted annually per the mandate of the PSA.',
+      'Provides direction and guidance in setting the annual work plan, the different programs, and activities to be done, and the budget needed for each activity.'
+    ],
+
+    'Information Technology Officer II': [
+      'Assists the division chief to achieve its assigned tasks.',
+      'Supervises and coordinates the work of all teams/personnel in the division.',
+      'Institutes protocols for the use of IT across PRO and its relative projects.',
+      'Plans the development and implementation of innovative procedures and techniques for efficient and effective day-to-day operation in the division.'
+    ],
+
+    'Information Systems Analyst I': [
+      'Prepares and manages the requirements of the Quality Management System of PSA for the division.',
+      'Monitors and maintains ISMD managed services to ensure high accessibility.',
+      'Creates, maintains, and updates IT resources, network, and support accounts.',
+      'Undertakes preventive and corrective maintenance of ICT hardware and software.'
+    ],
+
+    'Computer Maintenance Technologist I': [
+      'Prepares and manages the requirements of the Quality Management System of PSA for the division.',
+      'Monitors and maintains ISMD managed services to ensure high accessibility.',
+      'Creates, maintains, and updates IT resources, network, and support accounts.',
+      'Undertakes preventive and corrective maintenance of ICT hardware and software.'
+    ],
+
+    'Administrative Assistant I': [
+      'Manages the contents of the group calendars, accomplishments, and action matters of the division through official tools.',
+      'Prepares and disseminates documents such as memorandum, letters, forms, and other documents.',
+      'Receives and controls documents and communications.',
+      'Maintains all files, keeps records, and digitizes all documents.',
+      'Assists and facilitates the completion of administrative reports and documents.'
+    ]
+
+  },
+
+
+  'Data Center and Network Operations Unit': {
+
+    'Information Technology Officer I': [
+      'Supervises and coordinates the work of all personnel within the unit and prepares plans, programs, and strategies for the management and maintenance of network operations centers, data centers, including disaster recovery sites, systems, servers, and connectivity of the PRO.'
+    ],
+
+    'Information Systems Analyst II': [
+      'Ensures high accessibility of PhilSys services and ISMD managed services, implements plans, programs and strategies for Server and Data Center Development.'
+    ],
+
+    'Computer Maintenance Technologist II': [
+      'Performs server health check of all ISMD-managed services and troubleshoots server hardware problems.',
+      'Installs and maintains a well-functioning LAN, WLAN, WAN, and other similar network components.',
+      'Manages security options and software in computers and networks.'
+    ],
+
+    'Information Systems Analyst I': [
+      'Monitors and maintains ISMD managed services to ensure high accessibility.',
+      'Creates, maintains, and updates IT resources, network, and support accounts.'
+    ],
+
+    'Computer Maintenance Technologist I': [
+      'Performs server health check of all ISMD managed services and troubleshoots server hardware problems.',
+      'Troubleshoots computer system failures and provides solutions to restore functionality.'
+    ]
+
+  },
+
+
+  'ICT Support Service Unit': {
+
+    'Information Technology Officer I': [
+      'Supervises and coordinates the work of all personnel within the unit and prepares plans, programs, and strategies for the management and installation, repair, network cabling, and preventive and corrective maintenance of ICT requirements.',
+      'Provides technical assistance to the Information System Analysts of field offices to resolve technical issues and concerns encountered during PhilSys Registration.'
+    ],
+
+    'Information Systems Analyst II': [
+      'Ensures high accessibility of PhilSys services to PSA internal and external clients.',
+      'Implements plans, programs and strategies for the development and implementation of technical support services.'
+    ],
+
+    'Computer Maintenance Technologist II': [
+      'Arranges and provides timely technical support, preventive, or corrective maintenance sessions to discover or mend inefficiencies and keep a record of repairs or fixes and implement performance and control mechanisms to monitor Support Group Staff.',
+      'Provides technical helpdesk for PhilSys registration.',
+      'Troubleshoots system failures and provides solution to restore functionality.'
+    ],
+
+    'Computer Maintenance Technologist I': [
+      'Provides technical support for the configuration of registration kits.',
+      'Troubleshoots computer system failures and provides solutions to restore functionality.',
+      'Provides helpdesk for PhilSys registration.',
+      'Sets-up, installs, maintains and repairs ICT equipment or peripheral devices.'
+    ]
+
+  },
+
+
+  'Information Systems Development and Management Unit': {
+
+    'Information Technology Officer I': [
+      'Supervises and coordinates the work of all personnel within the unit and prepares plans, programs, and strategies for the management of the front-end and back-end system of PhilSys.',
+      'Performs user acceptance testing of the PhilSys Registration client application developed and updated by the service provider (e.g., System Integrator).',
+      'Develops PhilSys information systems, applications, software, and related ICT infrastructure.'
+    ],
+
+    'Information Systems Analyst II': [
+      'Implements plans, programs, and strategies for the development and implementation of information systems, front-end, and back-end systems of PhilSys.',
+      'Facilitates work programs, activities, and initiatives to ensure the establishment and maintenance of front-end and back-end systems of PhilSys.'
+    ],
+
+    'Computer Maintenance Technologist II': [
+      'Performs user acceptance of the PhilSys Registration client application developed and updated by the System Integrator.',
+      'Develops PhilSys information System applications, software, and ICT related infrastructure.'
+    ],
+
+    'Information Systems Analyst I': [
+      'Monitors and maintains ISMD managed services to ensure high accessibility.',
+      'Creates, maintains, and updates IT resources network, and support accounts.'
+    ],
+
+    'Computer Maintenance Technologist I': [
+      'Performs server health check of all ISMD managed services and troubleshoots server hardware problems.',
+      'Troubleshoots computer system failures and provides solutions to restore functionality.'
+    ]
+
+  },
+
+
+  'ICT Resource Management Unit': {
+
+    'Information Technology Officer I': [
+      'Supervises and coordinates the work of all personnel within the unit and prepares plans, programs, and strategies for the management of the allocation, distribution, and monitoring of ICT equipment, as well as procurement of ICT software and equipment which includes review of technical specifications and budget requirements.',
+      'Manages various information systems on issue tracking and project management, cloud storage, ICT devices, monitoring and PhilSys VPN allocation.'
+    ],
+
+    'Information Systems Analyst II': [
+      'Prepares and develops the ISSP and ICT-related laws, policies, and other statutory requirements within the mandate of the division.',
+      'Implements plans, programs and strategies for the development and implementation of information systems such as issue tracking and project management system, cloud, and VPN use for PhilSys registration.',
+      'Reviews, evaluates, and recommends IT hardware and software specification for procurement.',
+      'Facilitates work program activities and initiatives to ensure the establishment and maintenance of PRO ICT resources.'
+    ],
+
+    'Computer Maintenance Technologist II': [
+      'Prepares IT hardware and software specification for procurement and manages the allocation, distribution, and monitoring of ICT equipment.'
+    ],
+
+    'Information Systems Analyst I': [
+      'Monitors and maintains ISMD managed services to ensure high accessibility.',
+      'Creates, maintains, and updates IT resources network, and support accounts.'
+    ],
+
+    'Computer Maintenance Technologist I': [
+      'Performs server health check of all ISMD managed services and troubleshoots server hardware problems.',
+      'Troubleshoots computer system failures and provides solutions to restore functionality.'
+    ]
+
+  }
+
+};
 
 
 /* =========================================================
@@ -1381,6 +1556,8 @@ let people =
   JSON.parse(
     localStorage.getItem('sissIsmdPeopleV1') || 'null'
   ) || JSON.parse(JSON.stringify(initial));
+
+people = people.map(normalizePerson);
 
 let selected = null;
 
@@ -1415,6 +1592,103 @@ if(organizationState){
     offices = organizationState.offices;
   }
 }
+
+
+
+/* =========================================================
+   ORGANIZATION STRUCTURE MIGRATION
+========================================================= */
+
+(function migrateOrganizationStructure(){
+
+  let changed = false;
+
+
+  people =
+    people.map(person => {
+
+      const normalized =
+        normalizePerson(person);
+
+      if(
+        normalized.unit !== person.unit ||
+        normalized.group !== person.group
+      ){
+        changed = true;
+      }
+
+      return normalized;
+
+    });
+
+
+  const odc =
+    units.find(
+      unit =>
+        unit.code === 'ODC' ||
+        unit.name ===
+        'Office of the Division Chief'
+    );
+
+
+  if(!odc){
+
+    units.unshift({
+
+      name:'Office of the Division Chief',
+
+      code:'ODC',
+
+      division:'ISMD',
+
+      function:'Provides overall leadership, direction, coordination, planning, supervision, and management of the Information Systems Management Division and its functional units.'
+
+    });
+
+    changed = true;
+
+  }
+
+
+  const desiredCodes = {
+
+    'Data Center and Network Operations Unit':'A',
+
+    'ICT Support Service Unit':'B',
+
+    'Information Systems Development and Management Unit':'C',
+
+    'ICT Resource Management Unit':'D'
+
+  };
+
+
+  units.forEach(unit => {
+
+    if(
+      desiredCodes[unit.name] &&
+      unit.code !== desiredCodes[unit.name]
+    ){
+
+      unit.code =
+        desiredCodes[unit.name];
+
+      changed = true;
+
+    }
+
+  });
+
+
+  if(changed){
+
+    saveLocalPeople();
+
+    saveOrganizationState();
+
+  }
+
+})();
 
 
 /* =========================================================
@@ -1631,18 +1905,61 @@ function toSupabasePerson(person){
 }
 
 
-function fromSupabasePerson(person){
+
+/* =========================================================
+   ORGANIZATION / PERSONNEL NORMALIZATION
+========================================================= */
+
+function normalizeUnitName(unit){
+
+  if(
+    String(unit || '').trim() ===
+    'Division Leadership'
+  ){
+    return 'Office of the Division Chief';
+  }
+
+  return unit;
+}
+
+
+function getCorrectUnitCode(unitName){
+
+  const unit =
+    units.find(
+      item =>
+        String(item.name).trim() ===
+        String(unitName).trim()
+    );
+
+  return unit ? unit.code : undefined;
+}
+
+
+function normalizePerson(person){
+
+  const unit =
+    normalizeUnitName(person.unit);
 
   return {
-
     ...person,
 
+    unit,
+
     group:
+      getCorrectUnitCode(unit) ||
       person.group_code ||
       person.group ||
       undefined
 
   };
+
+}
+
+
+function normalizeSupabasePerson(person){
+
+  return normalizePerson(person);
 
 }
 
@@ -2354,33 +2671,94 @@ function renderSummary(){
 function renderFunctions(){
 
   $('functions').innerHTML =
-    units.map(
-      unit => `
 
-        <div
-          class="func-card"
-          data-unit="${escapeHtml(unit.name)}"
-        >
+    units
+      .map(unit => {
 
-          <h3>
-            ${escapeHtml(unit.name)}
-          </h3>
+        const positionMap =
+          positionFunctions[unit.name] || {};
 
-          <p>
-            ${escapeHtml(unit.function)}
-          </p>
+        const positionNames =
+          Object.keys(positionMap);
 
-        </div>
+        const positionsHtml =
+          positionNames.length
 
-      `
-    ).join('');
+            ? positionNames.map(position => {
+
+                const duties =
+                  positionMap[position] || [];
+
+                return `
+
+                  <div class="func-position">
+
+                    <h4>
+                      ${escapeHtml(position)}
+                    </h4>
+
+                    <ul>
+
+                      ${
+                        duties.map(
+                          duty => `
+                            <li>
+                              ${escapeHtml(duty)}
+                            </li>
+                          `
+                        ).join('')
+                      }
+
+                    </ul>
+
+                  </div>
+
+                `;
+
+              }).join('')
+
+            : `
+
+                <div class="func-position">
+
+                  <h4>
+                    No position description available
+                  </h4>
+
+                </div>
+
+              `;
+
+
+        return `
+
+          <div
+            class="func-card"
+            data-unit="${escapeHtml(unit.name)}"
+          >
+
+            <h3>
+              ${escapeHtml(unit.name)}
+            </h3>
+
+            <p class="func-unit-description">
+              ${escapeHtml(unit.function)}
+            </p>
+
+            <div class="func-positions">
+
+              ${positionsHtml}
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join('');
 
 }
-
-
-/* =========================================================
-   PERSONNEL PROFILE
-========================================================= */
 
 function selectPerson(id){
 
@@ -3725,31 +4103,38 @@ function resetLocalData(){
     units.length,
 
     {
-      name:'ICT Support Service Unit',
+      name:'Office of the Division Chief',
+      code:'ODC',
+      division:'ISMD',
+      function:'Provides overall leadership, direction, coordination, planning, supervision, and management of the Information Systems Management Division and its functional units.'
+    },
+
+    {
+      name:'Data Center and Network Operations Unit',
       code:'A',
+      division:'ISMD',
+      function:'Network operations centers, data centers, disaster recovery sites, systems, servers, connectivity, service availability, server health, network components, and related technical operations.'
+    },
+
+    {
+      name:'ICT Support Service Unit',
+      code:'B',
       division:'ISMD',
       function:'Technical support, ICT installation and repair, network cabling, PhilSys registration helpdesk support, registration-kit support, and preventive/corrective maintenance.'
     },
 
     {
-      name:'Data Center and Network Operations Unit',
-      code:'B',
+      name:'Information Systems Development and Management Unit',
+      code:'C',
       division:'ISMD',
-      function:'Network operations centers, disaster recovery sites, systems and servers, connectivity, service availability, server health, network components, and related technical operations.'
+      function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
     },
 
     {
       name:'ICT Resource Management Unit',
-      code:'C',
-      division:'ISMD',
-      function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
-    },
-
-    {
-      name:'Information Systems Development and Management Unit',
       code:'D',
       division:'ISMD',
-      function:'PhilSys front-end and back-end systems, user acceptance testing, information systems, applications, software, and ICT infrastructure development and management.'
+      function:'Allocation, distribution, monitoring, and procurement of ICT equipment and software, ICT resource policies, issue/project tracking, cloud storage, devices, and VPN allocation.'
     }
 
   );
