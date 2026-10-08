@@ -2036,176 +2036,30 @@ async function loadPeopleFromSupabase(){
 
     supabaseConnected = true;
 
+    /*
+       Supabase is the single source of truth
+       for personnel.
+
+       No localStorage.
+       No initial personnel fallback.
+       No automatic upload.
+    */
+
+    people =
+      rows.map(fromSupabasePerson);
+
+    updateStatus(
+      'connected',
+      `Supabase connected · ${people.length} records`
+    );
+
     console.log(
       'Supabase connected.',
-      rows.length,
+      people.length,
       'records loaded.'
     );
 
-
-    /*
-       If the table is empty, upload ALL initial
-       Functional Chart personnel automatically.
-    */
-
-    if(rows.length === 0){
-
-      const initialRows =
-        initial.map(toSupabasePerson);
-
-      await supabaseRequest(
-        SUPABASE_TABLE,
-        {
-          method:'POST',
-          body:JSON.stringify(initialRows)
-        }
-      );
-
-      people =
-        JSON.parse(
-          JSON.stringify(initial)
-        );
-
-      saveLocalPeople();
-
-      updateStatus(
-        'connected',
-        `Supabase connected · ${people.length} records`
-      );
-
-      console.log(
-        'Supabase was empty. Uploaded',
-        people.length,
-        'initial records.'
-      );
-
-    }else{
-
-      /*
-         IMPORTANT:
-
-         The Functional Chart "initial" array remains
-         the master list of personnel.
-
-         Supabase only supplies saved/updated data.
-
-         This prevents personnel such as ODC personnel
-         from disappearing simply because they are not
-         yet present in Supabase.
-      */
-
-      const supabasePeople =
-        rows.map(fromSupabasePerson);
-
-
-      const supabaseById =
-        new Map(
-          supabasePeople.map(person => [
-            String(person.id),
-            person
-          ])
-        );
-
-
-      /*
-         Start with EVERY person from the Functional Chart.
-      */
-
-      people =
-        initial.map(person => {
-
-          const saved =
-            supabaseById.get(
-              String(person.id)
-            );
-
-
-          /*
-             If this person exists in Supabase,
-             apply the Supabase data on top of the
-             Functional Chart data.
-          */
-
-          if(saved){
-
-            return {
-              ...person,
-              ...saved
-            };
-
-          }
-
-
-          /*
-             If the person does not exist in Supabase,
-             keep the Functional Chart record.
-          */
-
-          return {
-            ...person
-          };
-
-        });
-
-
-      /*
-         Also preserve any additional personnel that
-         exist in Supabase but are not yet in the
-         Functional Chart data.
-      */
-
-      const initialIds =
-        new Set(
-          initial.map(
-            person => String(person.id)
-          )
-        );
-
-
-      supabasePeople.forEach(
-        person => {
-
-          if(
-            !initialIds.has(
-              String(person.id)
-            )
-          ){
-
-            people.push({
-              ...person
-            });
-
-          }
-
-        }
-      );
-
-
-      saveLocalPeople();
-
-
-      updateStatus(
-        'connected',
-        `Supabase connected · ${people.length} records`
-      );
-
-
-      console.log(
-        'Functional Chart personnel:',
-        initial.length
-      );
-
-      console.log(
-        'Supabase personnel:',
-        supabasePeople.length
-      );
-
-      console.log(
-        'Final personnel list:',
-        people.length
-      );
-
-    }
+    renderAll();
 
   }catch(error){
 
@@ -2213,15 +2067,13 @@ async function loadPeopleFromSupabase(){
 
     updateStatus(
       'error',
-      'Supabase unavailable · Local data'
+      'Supabase unavailable'
     );
 
     console.error(
       'Supabase connection failed:',
       error
     );
-
-    renderAll();
 
   }
 
