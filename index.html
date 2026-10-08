@@ -1726,8 +1726,6 @@ if(organizationState){
 
   if(changed){
 
-    saveLocalPeople();
-
     saveOrganizationState();
 
   }
@@ -1948,7 +1946,22 @@ function toSupabasePerson(person){
 
 }
 
+async function savePersonToSupabase(person){
 
+  const data =
+    supabasePerson(person);
+
+  await supabaseRequest(
+    SUPABASE_TABLE +
+    '?id=eq.' +
+    encodeURIComponent(person.id),
+    {
+      method:'PATCH',
+      body:JSON.stringify(data)
+    }
+  );
+
+}
 
 /* =========================================================
    ORGANIZATION / PERSONNEL NORMALIZATION
@@ -3974,8 +3987,6 @@ async function addPersonnel(unitName){
 
   people.push(person);
 
-  saveLocalPeople();
-
   try{
 
     if(supabaseConnected){
@@ -4074,7 +4085,6 @@ async function addDivisionPersonnel(
 
   people.push(person);
 
-  saveLocalPeople();
 
   try{
 
@@ -4181,8 +4191,6 @@ function resetLocalData(){
   proServices = [];
 
   offices = [];
-
-  saveLocalPeople();
 
   saveOrganizationState();
 
