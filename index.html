@@ -1948,16 +1948,34 @@ function toSupabasePerson(person){
 
 async function savePersonToSupabase(person){
 
-  const data =
-    supabasePerson(person);
+  const data = {
+    id: person.id,
+    name: person.name,
+    role: person.role,
+    unit: person.unit,
+    group_code:
+      person.group_code ||
+      person.group ||
+      null,
+    bio: person.bio || '',
+    experience: person.experience || '',
+    skills:
+      Array.isArray(person.skills)
+        ? person.skills
+        : [],
+    achievements:
+      person.achievements || '',
+    photo:
+      person.photo || null
+  };
 
   await supabaseRequest(
     SUPABASE_TABLE +
     '?id=eq.' +
     encodeURIComponent(person.id),
     {
-      method:'PATCH',
-      body:JSON.stringify(data)
+      method: 'PATCH',
+      body: JSON.stringify(data)
     }
   );
 
